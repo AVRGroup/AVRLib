@@ -1,0 +1,64 @@
+#################################################################
+# 	#marker k													#
+# 	namePattk													#
+# 	directory/namePattk.patt									#
+# 	<value width of the pattern>								#
+# 	<coords of the center pattern>								#
+#################################################################
+
+#the number of patterns to be recognized
+9
+
+#marker 1
+name1
+directory/name1.patt
+50.0
+0.0 0.0
+
+#marker 2
+name2
+directory/name2.patt
+50.0
+0.0 0.0
+
+#marker 3
+name3
+directory/name3.patt
+50.0
+0.0 0.0
+
+#marker 4
+name4
+directory/name4.patt
+50.0
+0.0 0.0
+
+#marker 5
+name5
+directory/name5.patt
+50.0
+0.0 0.0
+
+#marker 6
+name6
+directory/name6.patt
+50.0
+0.0 0.0
+
+#marker 7
+name7
+directory/name7.patt
+50.0
+0.0 0.0
+
+#marker 8
+name8
+directory/name8.patt
+50.0
+0.0 0.0
+
+#marker 9
+name9
+directory/name9.patt
+50.0
+0.0 0.0

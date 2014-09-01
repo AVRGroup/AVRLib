@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="AVRLib Linux Examples">
+		<Project filename="examples/Avrlib SingleObject/SingleObject_Linux.cbp" active="1" />
+		<Project filename="examples/Avrlib MultiObject/MultiObject_Linux.cbp" />
+		<Project filename="examples/Avrlib TexturedObject/TexturedObject_Linux.cbp" />
+		<Project filename="examples/Avrlib Collision/Collision_Linux.cbp" />
+		<Project filename="examples/Avrlib MarkersDistance/MarkersDistance_Linux.cbp" />
+		<Project filename="examples/Avrlib MarkerCameraDistance/MarkerCameraDistance_Linux.cbp" />
+		<Project filename="examples/Avrlib CameraAxisView/CameraAxisView_Linux.cbp" />
+		<Project filename="examples/Avrlib MultiMarker/MultiMarker_Linux.cbp" />
+		<Project filename="examples/Avrlib RacketInteraction/RacketInteraction_Linux.cbp" />
+		<Project filename="examples/Avrlib RacketInclination/RacketInclination_Linux.cbp" />
+		<Project filename="examples/Avrlib MultiMarkerAutoCreation/MultiMarkerAutoCreation_Linux.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

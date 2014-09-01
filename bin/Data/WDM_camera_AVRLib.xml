@@ -1,0 +1,10 @@
+<dsvl_input>
+   <!-- 
+   Para remover a caixa de diálogo da camera, troque o parâmetro abaixo para "false"
+   -->
+	<camera show_format_dialog="true">
+		<pixel_format>
+			<RGB32 flip_v="true"/>
+		</pixel_format>
+	</camera>
+</dsvl_input>

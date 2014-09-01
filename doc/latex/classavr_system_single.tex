@@ -1,0 +1,85 @@
+\hypertarget{classavr_system_single}{\section{avr\-System\-Single Class Reference}
+\label{classavr_system_single}\index{avr\-System\-Single@{avr\-System\-Single}}
+}
+
+
+manages single marker patterns  
+
+
+
+
+{\ttfamily \#include \char`\"{}avr\-System\-Single.\-h\char`\"{}}
+
+
+
+Inheritance diagram for avr\-System\-Single\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classavr_system_single__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for avr\-System\-Single\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{classavr_system_single__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classavr_system_single_a25777b4804b90f0b07bea81bac2a76ea}{{\bfseries avr\-System\-Single} (const char $\ast$filename, double width, double $\ast$center=N\-U\-L\-L, void($\ast$display\-Func)(void)=N\-U\-L\-L)}\label{classavr_system_single_a25777b4804b90f0b07bea81bac2a76ea}
+
+\item 
+\hypertarget{classavr_system_single_a3d1e92b11e29b3a512b57c149f75e0ca}{{\bfseries avr\-System\-Single} (const char $\ast$filename, double width, double $\ast$center=N\-U\-L\-L, void($\ast$display\-Func)(int)=N\-U\-L\-L)}\label{classavr_system_single_a3d1e92b11e29b3a512b57c149f75e0ca}
+
+\item 
+\hypertarget{classavr_system_single_a295e942652e83adac2305ce58fe12bdd}{virtual bool \hyperlink{classavr_system_single_a295e942652e83adac2305ce58fe12bdd}{set\-Camera\-Transformation} (\hyperlink{classavr_pattern_info}{avr\-Pattern\-Info} $\ast$marker\-\_\-info, int marker\-\_\-num)}\label{classavr_system_single_a295e942652e83adac2305ce58fe12bdd}
+
+\begin{DoxyCompactList}\small\item\em calculates the camera transfomation relative the each marker pattern \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_single_a8b87bd9c86e02427ea210eac6ffc45ea}{virtual void \hyperlink{classavr_system_single_a8b87bd9c86e02427ea210eac6ffc45ea}{set\-Object\-Transformation} ()}\label{classavr_system_single_a8b87bd9c86e02427ea210eac6ffc45ea}
+
+\begin{DoxyCompactList}\small\item\em sets object transformation and prepares draw \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_single_a796f9552387f638896c154aee433c511}{virtual void \hyperlink{classavr_system_single_a796f9552387f638896c154aee433c511}{set\-Display\-Callback} (void($\ast$display\-Func)(void))}\label{classavr_system_single_a796f9552387f638896c154aee433c511}
+
+\begin{DoxyCompactList}\small\item\em sets secondary display function \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_single_a85f602cb791f1e9f6453df363cc1ff6d}{virtual void \hyperlink{classavr_system_single_a85f602cb791f1e9f6453df363cc1ff6d}{set\-Display\-Callback} (void($\ast$display\-Func)(int))}\label{classavr_system_single_a85f602cb791f1e9f6453df363cc1ff6d}
+
+\begin{DoxyCompactList}\small\item\em sets main display function \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_single_a6664aa63cfc119ef461de3b24b03bda5}{virtual void \hyperlink{classavr_system_single_a6664aa63cfc119ef461de3b24b03bda5}{draw\-Function} ()}\label{classavr_system_single_a6664aa63cfc119ef461de3b24b03bda5}
+
+\begin{DoxyCompactList}\small\item\em calls the renderization callback \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classavr_system_single_a1b9aa46cfd25de274c7375439ef75339}{void($\ast$ \hyperlink{classavr_system_single_a1b9aa46cfd25de274c7375439ef75339}{draw\-Func} )(int id)}\label{classavr_system_single_a1b9aa46cfd25de274c7375439ef75339}
+
+\begin{DoxyCompactList}\small\item\em main display callback \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_single_a7ea216b2e44684e7bec21e8dbdf6f797}{void($\ast$ \hyperlink{classavr_system_single_a7ea216b2e44684e7bec21e8dbdf6f797}{draw\-Func2} )(void)}\label{classavr_system_single_a7ea216b2e44684e7bec21e8dbdf6f797}
+
+\begin{DoxyCompactList}\small\item\em secondary display callback \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+manages single marker patterns 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & path of the file that defines the marker pattern \\
+\hline
+{\em width} & real width of the marker (in millimeters) \\
+\hline
+{\em center} & center coordinates of the marker \\
+\hline
+{\em display} & renderization callback \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+avr\-System\-Single.\-h\end{DoxyCompactItemize}

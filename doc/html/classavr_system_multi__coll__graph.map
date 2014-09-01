@@ -1,0 +1,6 @@
+<map id="avrSystemMulti" name="avrSystemMulti">
+<area shape="rect" id="node2" href="$classavr_system_marker.html" title="Abstract class for manages the systems marker of the application. " alt="" coords="5,355,125,381"/>
+<area shape="rect" id="node3" href="$classavr_matrix3x4.html" title="represents a 3x4 dimension matrix " alt="" coords="6,83,100,109"/>
+<area shape="rect" id="node6" href="$classavr_pattern.html" title="This class stores all information of a marker pattern which was registered in the application..." alt="" coords="105,173,185,200"/>
+<area shape="rect" id="node4" href="$classavr_matrix.html" title="represents a nxm dimension matrix " alt="" coords="80,5,155,32"/>
+</map>

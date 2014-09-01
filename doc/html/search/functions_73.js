@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['setcamerafiles',['setCameraFiles',['../classavr_application.html#aee3a9519894f816f0629d6f7781427df',1,'avrApplication::setCameraFiles()'],['../classavr_application.html#a27c801a3483c796d7987eca14444fc22',1,'avrApplication::setCameraFiles(char *vconf, char *cparam_name, int xwin=0, int ywin=0)']]],
+  ['setcameratransformation',['setCameraTransformation',['../classavr_system_auto_multi.html#aa5fda68ead553d6146ef38f53d12a4ed',1,'avrSystemAutoMulti::setCameraTransformation()'],['../classavr_system_marker.html#a565106c7110c5ffd5e9448d4b4349659',1,'avrSystemMarker::setCameraTransformation()'],['../classavr_system_multi.html#a96fe92b1d7cc08dfb4e8f57d7f0c7d17',1,'avrSystemMulti::setCameraTransformation()'],['../classavr_system_single.html#a295e942652e83adac2305ce58fe12bdd',1,'avrSystemSingle::setCameraTransformation()']]],
+  ['setdisplaycallback',['setDisplayCallback',['../classavr_system_auto_multi.html#a4b34ac9e730e6942e82f3f17a5dd0bb6',1,'avrSystemAutoMulti::setDisplayCallback(void(*displayFunc)(void))'],['../classavr_system_auto_multi.html#adb5f93027373d9f360e2e8d20e1b1549',1,'avrSystemAutoMulti::setDisplayCallback(void(*displayFunc)(int))'],['../classavr_system_marker.html#a5a01bf7952c90ebf4234d86a93c1a261',1,'avrSystemMarker::setDisplayCallback(void(*displayFunc)(void))=0'],['../classavr_system_marker.html#a89b996f137d45d3cd2f1adfa6cfebc34',1,'avrSystemMarker::setDisplayCallback(void(*displayFunc)(int))=0'],['../classavr_system_multi.html#afa378d6fb53f7ee831e1f4acb6214eeb',1,'avrSystemMulti::setDisplayCallback(void(*displayFunc)(void))'],['../classavr_system_multi.html#ae477c6fd28db9f09c98b71def0e5c041',1,'avrSystemMulti::setDisplayCallback(void(*displayFunc)(int))'],['../classavr_system_single.html#a796f9552387f638896c154aee433c511',1,'avrSystemSingle::setDisplayCallback(void(*displayFunc)(void))'],['../classavr_system_single.html#a85f602cb791f1e9f6453df363cc1ff6d',1,'avrSystemSingle::setDisplayCallback(void(*displayFunc)(int))']]],
+  ['setidentitymatrix',['setIdentityMatrix',['../classavr_matrix.html#a309f5af755f83a47327e6e88034d0680',1,'avrMatrix']]],
+  ['setkeycallback',['setKeyCallback',['../classavr_application.html#aa957ba4d970f15984767eeadb42ffafa',1,'avrApplication']]],
+  ['setmainmarker',['setMainMarker',['../classavr_system_auto_multi.html#a99b5740990d70eb05961ee83a54f58f1',1,'avrSystemAutoMulti']]],
+  ['setmainvideooutput',['setMainVideoOutput',['../classavr_application.html#a6d101b2dd2ec280cea6e4110dfcfabe3',1,'avrApplication']]],
+  ['setmatwithquatandpos',['setMatWithQuatAndPos',['../classavr_matrix3x4.html#a2cace74000dc095ad78c7dca07804a18',1,'avrMatrix3x4']]],
+  ['setmotioncallback',['setMotionCallback',['../classavr_application.html#ac09ee787d3e0baafd373967a29c70f22',1,'avrApplication']]],
+  ['setmousecallback',['setMouseCallback',['../classavr_application.html#af7c0e85b3ea4c60692698f25daa5980e',1,'avrApplication']]],
+  ['setnewsystem',['setNewSystem',['../classavr_application.html#adbbf1bd55fd50ee3056d72a37800fd01',1,'avrApplication']]],
+  ['setobjecttransformation',['setObjectTransformation',['../classavr_system_auto_multi.html#a8fc6be5311998a51056f8f4b2e443094',1,'avrSystemAutoMulti::setObjectTransformation()'],['../classavr_system_marker.html#a7d1e0f3184871cc973a7e0e4ac0cdfa4',1,'avrSystemMarker::setObjectTransformation()'],['../classavr_system_multi.html#adeba14fe5306c1c6aad82b2c5103fadf',1,'avrSystemMulti::setObjectTransformation()'],['../classavr_system_single.html#a8b87bd9c86e02427ea210eac6ffc45ea',1,'avrSystemSingle::setObjectTransformation()']]],
+  ['setprojectinfo',['setProjectInfo',['../classavr_application.html#a3132d9cf3eeb1eb75988c3e99f9aabe4',1,'avrApplication']]],
+  ['setreshapecallback',['setReshapeCallback',['../classavr_application.html#a1c22de4137bf8f3d898265b0989ede8e',1,'avrApplication']]],
+  ['setspecialcallback',['setSpecialCallback',['../classavr_application.html#a9513e1755d955acc17cbbf5fcd331a07',1,'avrApplication']]],
+  ['setthreshold',['setThreshold',['../classavr_application.html#a398f541cc785cbedeaf18ff240d633a8',1,'avrApplication::setThreshold()'],['../classavr_application.html#a2bfb6a28314fd0e9207d1d50c245313b',1,'avrApplication::setThreshold(int thresh)']]],
+  ['setvisibilitycallback',['setVisibilityCallback',['../classavr_application.html#a8f3ad5c74ee7e337e87f6f78baf93141',1,'avrApplication']]],
+  ['sizepatts',['sizePatts',['../classavr_system_marker.html#a8bd7531b62e628f53aca79934cc3cbe4',1,'avrSystemMarker']]],
+  ['start',['start',['../classavr_application.html#ac9ca425be51b316bba545440a8c0db1c',1,'avrApplication']]],
+  ['stop',['stop',['../classavr_application.html#a5fad6efc429d79c8e956833e03eda670',1,'avrApplication']]]
+];

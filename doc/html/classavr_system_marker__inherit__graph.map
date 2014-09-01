@@ -1,0 +1,5 @@
+<map id="avrSystemMarker" name="avrSystemMarker">
+<area shape="rect" id="node2" href="$classavr_system_auto_multi.html" title="manages marker patterns with relations between them (calculated in real time) " alt="" coords="5,80,139,107"/>
+<area shape="rect" id="node3" href="$classavr_system_multi.html" title="manages marker patterns with relations between them (calculated in preprocessing) ..." alt="" coords="163,80,271,107"/>
+<area shape="rect" id="node4" href="$classavr_system_single.html" title="manages single marker patterns " alt="" coords="296,80,413,107"/>
+</map>

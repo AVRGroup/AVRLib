@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="AVRLib Windows Examples">
+		<Project filename="examples/Avrlib SingleObject/SingleObject_Windows.cbp" />
+		<Project filename="examples/Avrlib MultiObject/MultiObject_Windows.cbp" />
+		<Project filename="examples/Avrlib TexturedObject/TexturedObject_Windows.cbp" />
+		<Project filename="examples/Avrlib Collision/Collision_Windows.cbp" />
+		<Project filename="examples/Avrlib MarkersDistance/MarkersDistance_Windows.cbp" />
+		<Project filename="examples/Avrlib MarkerCameraDistance/MarkerCameraDistance_Windows.cbp" />
+		<Project filename="examples/Avrlib CameraAxisView/CameraAxisView_Windows.cbp" />
+		<Project filename="examples/Avrlib MultiMarker/MultiMarker_Windows.cbp" />
+		<Project filename="examples/Avrlib RacketInteraction/RacketInteraction_Windows.cbp" />
+		<Project filename="examples/Avrlib RacketInclination/RacketInclination_Windows.cbp" />
+		<Project filename="examples/Avrlib MultiMarkerAutoCreation/MultiMarkerAutoCreation_Windows.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

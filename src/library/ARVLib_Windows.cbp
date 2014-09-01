@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AVRLib" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../lib/AVRLib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../bin/obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="../include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../lib/AVRLib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../bin/obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-Wno-unused-function" />
+			<Add option="-DGCC" />
+			<Add option="-DSDL_STDIO_REDIRECT" />
+			<Add option="-D__MINGW32__" />
+			<Add directory="../include" />
+			<Add directory="../library" />
+		</Compiler>
+		<Linker>
+			<Add option="-lmingw32" />
+			<Add library="libopengl32.a" />
+			<Add library="libglu32.a" />
+			<Add library="libole32.a" />
+			<Add library="..\..\lib\libglut32.a" />
+			<Add library="..\..\lib\libglew32.a" />
+			<Add library="..\..\lib\libglew32.dll.a" />
+			<Add library="..\..\lib\libARvideo.a" />
+		</Linker>
+		<Unit filename="avrApplication.cpp" />
+		<Unit filename="avrApplication.h" />
+		<Unit filename="avrGraphics.cpp" />
+		<Unit filename="avrGraphics.h" />
+		<Unit filename="avrMarker.cpp" />
+		<Unit filename="avrMarker.h" />
+		<Unit filename="avrMath.cpp" />
+		<Unit filename="avrMath.h" />
+		<Unit filename="avrMatrix.cpp" />
+		<Unit filename="avrMatrix.h" />
+		<Unit filename="avrMatrix3x4.cpp" />
+		<Unit filename="avrMatrix3x4.h" />
+		<Unit filename="avrParameters.cpp" />
+		<Unit filename="avrParameters.h" />
+		<Unit filename="avrPatt.cpp" />
+		<Unit filename="avrPatt.h" />
+		<Unit filename="avrPattern.cpp" />
+		<Unit filename="avrPattern.h" />
+		<Unit filename="avrPatternInfo.h" />
+		<Unit filename="avrSystemAutoMulti.cpp" />
+		<Unit filename="avrSystemAutoMulti.h" />
+		<Unit filename="avrSystemMarker.cpp" />
+		<Unit filename="avrSystemMarker.h" />
+		<Unit filename="avrSystemMulti.cpp" />
+		<Unit filename="avrSystemMulti.h" />
+		<Unit filename="avrSystemSingle.cpp" />
+		<Unit filename="avrSystemSingle.h" />
+		<Unit filename="avrUtil.cpp" />
+		<Unit filename="avrUtil.h" />
+		<Unit filename="avrVideo.cpp" />
+		<Unit filename="avrVideo.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="1" />
+				<doxyfile_project project_number="1.0" output_directory="doxygen" />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_alpha_index alphabetical_index="0" />
+				<doxyfile_output latex="1" />
+				<doxyfile_dot class_diagrams="1" have_dot="1" />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

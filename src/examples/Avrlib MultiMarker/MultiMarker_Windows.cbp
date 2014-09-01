@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AVRLibTests - MultiMarker" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug Win32">
+				<Option output="../../../bin/avrMultiMarker" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../bin/" />
+				<Option object_output="../../../bin/obj" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-W" />
+					<Add option="-O0" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add directory="../../lib" />
+				</Linker>
+			</Target>
+			<Target title="Release Win32">
+				<Option output="../../../bin/avrMultiMarker" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../bin/" />
+				<Option object_output="../../../bin/obj" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-O0" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="..\..\bin\AVRLib.dll" />
+					<Add directory="../../lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="../../library" />
+			<Add directory="../../include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lmingw32" />
+			<Add library="..\..\..\lib\libAVRLib.a" />
+			<Add library="..\..\..\lib\libopengl32.a" />
+			<Add library="..\..\..\lib\libglu32.a" />
+			<Add library="..\..\..\lib\libglut32.a" />
+			<Add library="..\..\..\lib\libARvideo.a" />
+		</Linker>
+		<Unit filename="MultiMarker.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

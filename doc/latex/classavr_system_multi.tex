@@ -1,0 +1,81 @@
+\hypertarget{classavr_system_multi}{\section{avr\-System\-Multi Class Reference}
+\label{classavr_system_multi}\index{avr\-System\-Multi@{avr\-System\-Multi}}
+}
+
+
+manages marker patterns with relations between them (calculated in preprocessing)  
+
+
+
+
+{\ttfamily \#include \char`\"{}avr\-System\-Multi.\-h\char`\"{}}
+
+
+
+Inheritance diagram for avr\-System\-Multi\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classavr_system_multi__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for avr\-System\-Multi\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{classavr_system_multi__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classavr_system_multi_a5c2395b00dfbcfc5fe8381131997901a}{{\bfseries avr\-System\-Multi} (const char $\ast$filename, void($\ast$display\-Func)(void)=N\-U\-L\-L)}\label{classavr_system_multi_a5c2395b00dfbcfc5fe8381131997901a}
+
+\item 
+\hypertarget{classavr_system_multi_aeef640459bbbd037d6d64ce9587c37d6}{{\bfseries avr\-System\-Multi} (const char $\ast$filename, void($\ast$display\-Func)(int)=N\-U\-L\-L)}\label{classavr_system_multi_aeef640459bbbd037d6d64ce9587c37d6}
+
+\item 
+\hypertarget{classavr_system_multi_a96fe92b1d7cc08dfb4e8f57d7f0c7d17}{virtual bool \hyperlink{classavr_system_multi_a96fe92b1d7cc08dfb4e8f57d7f0c7d17}{set\-Camera\-Transformation} (\hyperlink{classavr_pattern_info}{avr\-Pattern\-Info} $\ast$marker\-\_\-info, int marker\-\_\-num)}\label{classavr_system_multi_a96fe92b1d7cc08dfb4e8f57d7f0c7d17}
+
+\begin{DoxyCompactList}\small\item\em calculates the camera transfomation relative the each marker pattern \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_multi_adeba14fe5306c1c6aad82b2c5103fadf}{virtual void \hyperlink{classavr_system_multi_adeba14fe5306c1c6aad82b2c5103fadf}{set\-Object\-Transformation} ()}\label{classavr_system_multi_adeba14fe5306c1c6aad82b2c5103fadf}
+
+\begin{DoxyCompactList}\small\item\em sets object transformation and prepares draw \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_multi_afa378d6fb53f7ee831e1f4acb6214eeb}{virtual void \hyperlink{classavr_system_multi_afa378d6fb53f7ee831e1f4acb6214eeb}{set\-Display\-Callback} (void($\ast$display\-Func)(void))}\label{classavr_system_multi_afa378d6fb53f7ee831e1f4acb6214eeb}
+
+\begin{DoxyCompactList}\small\item\em sets secondary display function \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_multi_ae477c6fd28db9f09c98b71def0e5c041}{virtual void \hyperlink{classavr_system_multi_ae477c6fd28db9f09c98b71def0e5c041}{set\-Display\-Callback} (void($\ast$display\-Func)(int))}\label{classavr_system_multi_ae477c6fd28db9f09c98b71def0e5c041}
+
+\begin{DoxyCompactList}\small\item\em sets main display function \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_multi_a0c32328ce187e8c040ed7ac0ae10ceeb}{virtual void \hyperlink{classavr_system_multi_a0c32328ce187e8c040ed7ac0ae10ceeb}{draw\-Function} ()}\label{classavr_system_multi_a0c32328ce187e8c040ed7ac0ae10ceeb}
+
+\begin{DoxyCompactList}\small\item\em calls the renderization callback \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classavr_system_multi_afb9a6363fb5550c6a180fa1a42a5d7c1}{void($\ast$ \hyperlink{classavr_system_multi_afb9a6363fb5550c6a180fa1a42a5d7c1}{draw\-Func} )(int id)}\label{classavr_system_multi_afb9a6363fb5550c6a180fa1a42a5d7c1}
+
+\begin{DoxyCompactList}\small\item\em main display callback \end{DoxyCompactList}\item 
+\hypertarget{classavr_system_multi_ab1bc1f44dc7b9a3438355ed8a0ef5f65}{void($\ast$ \hyperlink{classavr_system_multi_ab1bc1f44dc7b9a3438355ed8a0ef5f65}{draw\-Func2} )(void)}\label{classavr_system_multi_ab1bc1f44dc7b9a3438355ed8a0ef5f65}
+
+\begin{DoxyCompactList}\small\item\em secondary display callback \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+manages marker patterns with relations between them (calculated in preprocessing) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & path of the config file of the markers \\
+\hline
+{\em display} & renderization callback \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+avr\-System\-Multi.\-h\end{DoxyCompactItemize}
