@@ -6,8 +6,7 @@ The AVRLib (Augmented and Virtual Reality Library) is C++ Augmented Reality libr
 Version:
   1.0
 
-More information about library:
-  https://code.google.com/p/avrlib/
-Documentation:
-  http://avrlib.url.ph/index.html
+More information about library: https://code.google.com/p/avrlib/
+
+Documentation: http://avrlib.url.ph/index.html
   
