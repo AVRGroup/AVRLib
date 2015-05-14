@@ -1,36 +1,48 @@
+/*
+  Name:        avrSystemAutoMulti.h
+  Version      1.0.1
+  Author:      Douglas Oliveira, Rodrigo L. S. Silva
+  Date:        10/10/2012
+  Last Update: 09/10/2014
+  Description: class to manage marker patterns with relations between them
+*/
+
 #ifndef AVR_SYSTEM_AUTO_MULTI_H
 #define AVR_SYSTEM_AUTO_MULTI_H
 
 #include <avrSystemMarker.h>
 
-const short  MODE_NEAR_PROJECTION   = 0;
-const short  MODE_NEAR_CAMERA       = 1;
-const short  MODE_RESISTENCE        = 2;
-const short  MODE_INCLINATION       = 3;
-const short  MODE_ACCURACY          = 4;
-const short  MODE_PRIORITY          = 5;
+/** \enum BASE_SELECTION_MODE
+*  \brief defines the base marker selection modes
+*/
+enum BASE_SELECTION_MODE {
+   //! base marker is the marker most near of the object projected
+   MODE_NEAR_PROJECTION,
+   //! base marker is the marker most near of the real camera
+   MODE_NEAR_CAMERA,
+   //! base marker is the marker which has less state change
+   MODE_RESISTENCE,
+   //! base marker is the marker that is less inclined in relation to real camera
+   MODE_INCLINATION,
+   //! base marker is the marker that has the larger accuracy
+   MODE_ACCURACY,
+   //! base marker is the first visible marker (in the order of insertion, in other words, in the order shown in the configuration file)
+   MODE_PRIORITY
+};
 
 /** \class avrSystemAutoMulti avrSystemAutoMulti.h "avrSystemAutoMulti.h"
  * \brief manages marker patterns with relations between them (calculated in real time)
- *
- * \param holderMode definition mode of the base marker (responsible by renderization) [default is MODE_NEAR_PROJECTION]
- *    Possible modes are:\n
- *       \li MODE_NEAR_PROJECTION base marker is the marker most near of the object projected\n
- *       \li MODE_NEAR_CAMERA base marker is the marker most near of the real camera\n
- *       \li MODE_RESISTENCE base marker is the marker which has less state change\n
- *       \li MODE_INCLINATION base marker is the marker that is less inclined in relation to real camera\n
- *       \li MODE_ACCURACY base marker is the marker that has the larger accuracy\n
- *       \li MODE_PRIORITY base marker is the first visible marker (in the order of insertion, in other words, in the order shown in the config file)
- * \param display renderization callback
  */
 class avrSystemAutoMulti : public avrSystemMarker{
+   //! \cond
    private:
-      int             definedHolderMode;  // definition mode of the base marker
-      unsigned int    mainMarker;         // index main marker, where will perform the projection indice
-      unsigned int    holderMarker;       // index base marker, responsible by projection
-      double          *accuracyTransf;    // stores the accuracy of the relation
-      avrMatrix3x4    *prevTransf;        // stores the relations between the base marker and the other markers, one previous frame
-      avrMatrix3x4    *transf;            // stores the relations between the base marker and the other markers
+      unsigned int         mainMarker;         // index main marker, where will perform the projection indice
+      unsigned int         holderMarker;       // index base marker, responsible by projection
+      double               *accuracyTransf;    // stores the accuracy of the relation
+      avrMatrix3x4         *prevTransf;        // stores the relations between the base marker and the other markers, one previous frame
+      avrMatrix3x4         *transf;            // stores the relations between the base marker and the other markers
+      BASE_SELECTION_MODE  definedHolderMode;  // definition mode of the base marker
+   //! \endcond
 
    public:
       //! main display callback
@@ -38,8 +50,17 @@ class avrSystemAutoMulti : public avrSystemMarker{
       //! secondary display callback
       void (*drawFunc2)(void);
 
-      avrSystemAutoMulti(int holderMode = MODE_NEAR_PROJECTION, void (*displayFunc)(void) = NULL);
-      avrSystemAutoMulti(int holderMode = MODE_NEAR_PROJECTION, void (*displayFunc)(int ) = NULL);
+      /** \brief initialization constructor
+       * \param BASE_SELECTION_MODE base marker selection mode (default is MODE_NEAR_PROJECTION)
+       * \param display main renderization callback
+       */
+      avrSystemAutoMulti(BASE_SELECTION_MODE = MODE_NEAR_PROJECTION, void (*displayFunc)(int ) = NULL);
+      /** \brief initialization constructor
+       * \param BASE_SELECTION_MODE base marker selection mode (default is MODE_NEAR_PROJECTION)
+       * \param display secondary renderization callback
+       */
+      avrSystemAutoMulti(BASE_SELECTION_MODE = MODE_NEAR_PROJECTION, void (*displayFunc)(void) = NULL);
+      //! destructor
       virtual ~avrSystemAutoMulti();
 
       //! sets marker responsible by projection
@@ -65,12 +86,13 @@ class avrSystemAutoMulti : public avrSystemMarker{
       //! calls the renderization callback
       virtual void drawFunction();
 
+   //! \cond
    private:
-      int    searchBestMarker(double *qualityHolder, double *bestQuality);
-      void   correctError();
-      void   updateTransf();
-
-      void initialize();
+      int   searchBestMarker(double *qualityHolder, double *bestQuality);
+      void  correctError();
+      void  updateTransf();
+      void  initialize();
+   //! \endcond
 };
 
 #endif

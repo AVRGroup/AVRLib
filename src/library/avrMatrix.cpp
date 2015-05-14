@@ -5,26 +5,25 @@
 #include <cmath>
 
 #include <avrMath.h>
-#include <avrUtil.h>
 #include <avrMatrix.h>
 
 #define  MEMORY_ERROR      0
 
 using namespace std;
 
-static ARMat      *avrMatrixToArMat(double *m, int rows, int clms);
+static ARMat      *avrMatrixToArMat(double *m, unsigned int rows, unsigned int clms);
 static avrMatrix  *arMatToAvrMatrix(ARMat *m);
 static int        pos(int i, int j, int d);
 
 //Constructors
 avrMatrix::avrMatrix()
 {
-   this->matrixx = NULL;
+   this->data = NULL;
 }
 avrMatrix::avrMatrix(int row, int clm)
 {
 	try{
-	   this->matrixx = new double[row * clm];
+	   this->data = new double[row * clm];
 	}catch(bad_alloc& ba){
       cerr << ba.what() << endl;
       exit(EXIT_FAILURE);
@@ -37,7 +36,7 @@ avrMatrix::avrMatrix(int row, int clm)
 
 //Destructor
 avrMatrix::~avrMatrix(){
-//   delete[] this->matrixx;
+//   delete[] this->data;
 }
 
 
@@ -46,8 +45,8 @@ avrMatrix::~avrMatrix(){
 avrMatrix& avrMatrix::operator* (double scalar)
 {
    avrMatrix *mat2 = new avrMatrix(this->row(), this->column());
-   for(int i = 0; i < this->row(); i++){
-      for(int j = 0; j < this->column(); j++){
+   for(unsigned int i = 0; i < this->row(); i++){
+      for(unsigned int j = 0; j < this->column(); j++){
          double element = scalar * this->access(i, j);
          mat2->add(element,i,j);
       }
@@ -62,10 +61,10 @@ avrMatrix& avrMatrix::operator* (const avrMatrix& mat2) throw(std::invalid_argum
       throw invalid_argument("column dimension different of the row dimension");
 
    avrMatrix *mat3 = new avrMatrix(this->rows, mat2.column());
-   for(int i = 0; i < this->rows; i++){
-      for(int j = 0; j < mat2.column(); j++){
+   for(unsigned int i = 0; i < this->rows; i++){
+      for(unsigned int j = 0; j < mat2.column(); j++){
          double element = 0.0;
-         for(int k = 0; k < this->clms; k++){
+         for(unsigned int k = 0; k < this->clms; k++){
             element += this->access(i,k) * mat2.access(k,j);
          }
          mat3->add(element,i,j);
@@ -80,8 +79,8 @@ avrMatrix& avrMatrix::operator+ (const avrMatrix& mat2) throw(std::invalid_argum
       throw invalid_argument("dimension of the row and column different");
 
    avrMatrix *mat3 = new avrMatrix(this->row(), this->column());
-   for(int i = 0; i < this->row(); i++){
-      for(int j = 0; j < mat2.column(); j++){
+   for(unsigned int i = 0; i < this->row(); i++){
+      for(unsigned int j = 0; j < mat2.column(); j++){
          double element = this->access(i,j) + mat2.access(i,j);
          mat3->add(element,i,j);
       }
@@ -95,8 +94,8 @@ avrMatrix& avrMatrix::operator- (const avrMatrix& mat2) throw(std::invalid_argum
       throw invalid_argument("dimension of the row and column different");
 
    avrMatrix *mat3 = new avrMatrix(this->row(), this->column());
-   for(int i = 0; i < this->row(); i++){
-      for(int j = 0; j < mat2.column(); j++){
+   for(unsigned int i = 0; i < this->row(); i++){
+      for(unsigned int j = 0; j < mat2.column(); j++){
          double element = this->access(i,j) - mat2.access(i,j);
          mat3->add(element,i,j);
       }
@@ -106,41 +105,37 @@ avrMatrix& avrMatrix::operator- (const avrMatrix& mat2) throw(std::invalid_argum
 
 avrMatrix& avrMatrix::operator= (const avrMatrix& mat2)
 {
-   if(!this->matrixx){
-      create:
-         try{
-            this->matrixx = new double[mat2.row() * mat2.column()];
-         }catch(bad_alloc& ba){
-            cerr << ba.what() << endl;
-            exit(EXIT_FAILURE);
-         }
-         this->rows = mat2.row();
-         this->clms = mat2.column();
+   if(this->row() != mat2.row() || this->column() != mat2.column()){
+      delete[] this->data;
+      this->data = NULL;
    }
-   else if(this->row() != mat2.row() || this->column() != mat2.column()){
-      delete[] this->matrixx;
-      this->matrixx = NULL;
-      goto create;
+   if(!this->data){
+      try{
+         this->data = new double[mat2.row() * mat2.column()];
+      }catch(bad_alloc& ba){
+         cerr << ba.what() << endl;
+         exit(EXIT_FAILURE);
+      }
+      this->rows = mat2.row();
+      this->clms = mat2.column();
    }
-
-   for(int i = 0; i < this->rows; i++){
-      for(int j = 0; j < this->clms; j++){
-         this->matrixx[i * this->clms + j] = mat2.access(i, j);
+   for(unsigned int i = 0; i < this->rows; i++){
+      for(unsigned int j = 0; j < this->clms; j++){
+         this->data[i * this->clms + j] = mat2.access(i, j);
       }
    }
-
    return *this;
 }
 
 double* avrMatrix::operator[](unsigned int index) throw(std::out_of_range&)
 {
    if(index >= row()) throw out_of_range("invalid index");
-   return &(this->matrixx[index * clms]);
+   return &(this->data[index * clms]);
 }
 
 avrMatrix& avrMatrix::inverse() const throw(std::domain_error&)
 {
-   ARMat *inverse = avrMatrixToArMat(this->matrixx, this->rows, this->clms);
+   ARMat *inverse = avrMatrixToArMat(this->data, this->rows, this->clms);
    int sucess = arMatrixSelfInv(inverse);
    sucess++;      // retorno arMatrixSelfInv é -1 ou 0, esta linha converte para 0 ou 1
    if(!sucess)
@@ -152,8 +147,8 @@ avrMatrix& avrMatrix::inverse() const throw(std::domain_error&)
 avrMatrix& avrMatrix::transposed() const
 {
    avrMatrix *mat2 = new avrMatrix(this->clms, this->rows);
-   for(int i = 0; i < this->row(); i++)
-      for(int j = 0; j < this->column(); j++)
+   for(unsigned int i = 0; i < this->row(); i++)
+      for(unsigned int j = 0; j < this->column(); j++)
          mat2->add(this->access(i, j), j, i);
 
    return *mat2;
@@ -162,28 +157,25 @@ avrMatrix& avrMatrix::transposed() const
 double avrMatrix::determinant() const
 {
    ARMat *mat;
-   try{
-      mat = avrMatrixToArMat(this->matrixx, this->rows, this->clms);
-   }catch(ARMat* e){
+   mat = avrMatrixToArMat(this->data, this->rows, this->clms);
       cout << "bad allocated\n";
       exit(EXIT_FAILURE);
-   }
    return arMatrixDet(mat);
 }
 
 
 /* ***** Auxiliary ***** */
 
-double avrMatrix::access(int row,int clm) const throw(std::out_of_range&)
+double avrMatrix::access(unsigned int row, unsigned int clm) const throw(std::out_of_range&)
 {
-   if(row < 0 || clm < 0 || row >= this->rows || clm >= this->clms) throw out_of_range("invalid index");
-   return this->matrixx[row * column() + clm];
+   if(row >= this->rows || clm >= this->clms) throw out_of_range("invalid index");
+   return this->data[row * column() + clm];
 }
 
-void avrMatrix::add(double element, int row, int clm) throw(std::out_of_range&)
+void avrMatrix::add(double element, unsigned int row, unsigned int clm) throw(std::out_of_range&)
 {
-   if(row < 0 || clm < 0 || row >= this->rows || clm >= this->clms) throw out_of_range("invalid index");
-   this->matrixx[row * column() + clm] = element;
+   if(row >= this->rows || clm >= this->clms) throw out_of_range("invalid index");
+   this->data[row * column() + clm] = element;
 }
 
 void avrMatrix::print(string name, int decimals) const
@@ -192,9 +184,9 @@ void avrMatrix::print(string name, int decimals) const
       cout << "  " << name << " " << this->rows << "x" << this->clms << "\n";
    else
       cout << "  avrMatrix " << this->rows << "x" << this->clms << "\n";
-	for(int r = 0; r < this->rows; r++) {
+	for(unsigned int r = 0; r < this->rows; r++) {
 		cout << " | ";
-		for(int c = 0; c < this->clms; c++) {
+		for(unsigned int c = 0; c < this->clms; c++) {
          cout.flags(std::ios::fixed | std::ios::showpoint | std::ios::showpos);
          cout.precision(decimals);
 			cout << this->access(r, c) << " | ";
@@ -207,22 +199,24 @@ void avrMatrix::print(string name, int decimals) const
 
 /* ***** Gets ***** */
 
-int avrMatrix::row() const
+unsigned int avrMatrix::row() const
 {
    return this->rows;
 }
 
-int avrMatrix::column() const
+unsigned int avrMatrix::column() const
 {
    return this->clms;
 }
 
 double** avrMatrix::matrix() const
 {
-   double ret[this->rows][this->clms];
+   double** ret = new double*[this->rows];
+   for(unsigned int i = 0; i < this->rows; i++)
+      ret[i] = new double[this->clms];
 
-   for(int i = 0; i < this->rows; i++)
-      for(int j = 0; j < this->clms; j++)
+   for(unsigned int i = 0; i < this->rows; i++)
+      for(unsigned int j = 0; j < this->clms; j++)
          ret[i][j] = this->access(i, j);
 
    return (double**) ret;
@@ -233,8 +227,8 @@ double** avrMatrix::matrix() const
 
 void avrMatrix::setIdentityMatrix()
 {
-   for(int i = 0; i < this->rows; i++){
-      for(int j = 0; j < this->clms; j++){
+   for(unsigned int i = 0; i < this->rows; i++){
+      for(unsigned int j = 0; j < this->clms; j++){
          if(i == j)  avrMatrix::add(1.0, i, j);
          else        avrMatrix::add(0.0, i, j);
       }
@@ -244,9 +238,9 @@ void avrMatrix::setIdentityMatrix()
 
 /* ***** Statics ***** */
 
-static ARMat *avrMatrixToArMat(double *mat, int rows, int clms){
+static ARMat *avrMatrixToArMat(double *mat, unsigned int rows, unsigned int clms){
    ARMat *dest = arMatrixAlloc(rows, clms);
-   if(!dest)   throw NULL;
+   if(!dest)   return NULL;
 
    for(int i = 0; i < dest->row; i++)
       for(int j = 0; j < dest->clm; j++)
@@ -258,8 +252,8 @@ static ARMat *avrMatrixToArMat(double *mat, int rows, int clms){
 static avrMatrix *arMatToAvrMatrix(ARMat *mat){
    avrMatrix *dest = new avrMatrix(mat->row, mat->clm);
 
-   for(int i = 0; i < dest->row(); i++)
-      for(int j = 0; j < dest->column(); j++)
+   for(unsigned int i = 0; i < dest->row(); i++)
+      for(unsigned int j = 0; j < dest->column(); j++)
          dest->add(mat->m[i * dest->column() + j], i, j);
 
    return dest;

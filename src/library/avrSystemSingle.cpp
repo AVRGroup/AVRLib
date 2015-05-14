@@ -1,8 +1,10 @@
 #include <avrSystemSingle.h>  // << inclui avrUtil, avrPattern, avrMatrix3x4
 #include <avrGraphics.h>      // << inclui arvParameters que inclui avrUtil
-#include <avrMath.h>          // << inclui avrUtil
+#include <avrVision.h>
 
-avrSystemSingle::avrSystemSingle(const char *filename, double width, double *center, void (*displayFunc)(void)) : avrSystemMarker()
+using namespace std;
+
+avrSystemSingle::avrSystemSingle(const string& filename, double width, double *center, void (*displayFunc)(void)) : avrSystemMarker()
 {
     avrPattern *newPatt = new avrPattern(filename, width, center);
     this->addPattern(*newPatt);
@@ -10,7 +12,7 @@ avrSystemSingle::avrSystemSingle(const char *filename, double width, double *cen
     this->drawFunc2 = displayFunc;
 }
 
-avrSystemSingle::avrSystemSingle(const char *filename, double width, double *center, void (*displayFunc)(int)) : avrSystemMarker()
+avrSystemSingle::avrSystemSingle(const string& filename, double width, double *center, void (*displayFunc)(int)) : avrSystemMarker()
 {
     avrPattern *newPatt = new avrPattern(filename, width, center);
     this->addPattern(*newPatt);
@@ -64,8 +66,6 @@ void avrSystemSingle::drawFunction()
       this->drawFunc(this->getPatt(0).id());
    else if(this->drawFunc2)
       this->drawFunc2();
-   else;
-      // nop
 
    argDrawMode2D();
    glDisable( GL_DEPTH_TEST );

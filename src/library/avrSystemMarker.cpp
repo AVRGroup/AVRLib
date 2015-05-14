@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <avrSystemMarker.h>
 
 avrSystemMarker::avrSystemMarker()

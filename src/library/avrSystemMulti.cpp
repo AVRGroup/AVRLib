@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cstdlib>
-#include <avrSystemMulti.h>   // << inclui avrUtil, avrPattern, avrMatrix3x4
-#include <avrGraphics.h>      // << inclui arvParameters que inclui avrUtil
-#include <avrMarker.h>        // << inclui avrUtil
-#include <avrMath.h>          // << inclui avrUtil
+#include <avrSystemMulti.h>   // << inclui avrPattern, avrMatrix3x4
+#include <avrGraphics.h>      // << inclui arvParameters e avrUtil
+#include <avrVision.h>        // << inclui avrUtil, avrPatternInfo e avrMatrix3x4
+
 
 static ARMultiMarkerInfoT* multi = NULL;
 
 using namespace std;
 
-avrSystemMulti::avrSystemMulti(const char* filename, void (*displayFunc)(void)) : avrSystemMarker()
+avrSystemMulti::avrSystemMulti(const string& filename, void (*displayFunc)(void)) : avrSystemMarker()
 {
    this->drawFunc = NULL;
    this->drawFunc2 = displayFunc;
@@ -17,7 +17,7 @@ avrSystemMulti::avrSystemMulti(const char* filename, void (*displayFunc)(void)) 
    this->initialize(filename);
 }
 
-avrSystemMulti::avrSystemMulti(const char* filename, void (*displayFunc)(int)) : avrSystemMarker()
+avrSystemMulti::avrSystemMulti(const string& filename, void (*displayFunc)(int)) : avrSystemMarker()
 {
    this->drawFunc = displayFunc;
    this->drawFunc2 = NULL;
@@ -25,9 +25,9 @@ avrSystemMulti::avrSystemMulti(const char* filename, void (*displayFunc)(int)) :
    this->initialize(filename);
 }
 
-void avrSystemMulti::initialize(const char* filename)
+void avrSystemMulti::initialize(const string& filename)
 {
-   multi = arMultiReadConfigFile(filename);
+   multi = arMultiReadConfigFile(filename.c_str());
    if(!multi){
       cout << "The config file can not be opened or read";
       exit(EXIT_FAILURE);
@@ -35,7 +35,7 @@ void avrSystemMulti::initialize(const char* filename)
 
    avrPattern *newPatt;
    for(int i = 0; i < multi->marker_num; i++){
-      newPatt = new avrPattern(NULL, multi->marker[i].width, multi->marker[i].center);
+      newPatt = new avrPattern("", multi->marker[i].width, multi->marker[i].center);
       newPatt->setID(multi->marker[i].patt_id);
       this->addPattern(*newPatt);
    }
@@ -45,12 +45,14 @@ bool avrSystemMulti::setCameraTransformation(avrPatternInfo *marker_info, int ma
    double err = avrMultiGetTransMat(marker_info, marker_num, multi);
    if(err < 0 || err > 100) return false;
 
-   for(int k = 0; k < this->patts.size(); k++){
-      for(int i = 0, j = 0; i < 4, j < 3; i++, j++){
-         try{
-            this->getPatt(k).pos3D().add(multi->marker[k].pos3d[i][j], i, j);
-         }catch(out_of_range& e){
-            cerr << e.what() << endl;
+   for(unsigned int k = 0; k < this->patts.size(); k++){
+      for(int i = 0; i < 4; i++){
+         for(int j = 0; j < 3; j++){
+            try{
+               this->getPatt(k).pos3D().add(multi->marker[k].pos3d[i][j], i, j);
+            }catch(out_of_range& e){
+               cerr << e.what() << endl;
+            }
          }
       }
       this->getPatt(k).trans() = multi->marker[k].trans;

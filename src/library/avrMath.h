@@ -1,64 +1,155 @@
 /*
   Name:        avrMath.h
-  Version      0.1
+  Version      1.0.1
   Author:      Felipe Caetano, Luiz Maurílio, Rodrigo L. S. Silva
   Date:        10/10/2012
-  Last Update: 10/10/2012
+  Last Update: 09/10/2014
   Description: Collection of the mathematical functions of ARToolkit. Receive functions
-               from arGetTransMat, arGetTransMat2, arGetTransMat3, arGetTransMatCont,
-               arMultiGetTransMat, mDet, mInv, mMul, mPCA, mSelfInv, mTrans, vHouse,
+               from mDet, mInv, mMul, mPCA, mSelfInv, mTrans, vHouse,
                vInnerP and vTridiag.
 */
 
 #ifndef AVR_MATH_H
 #define AVR_MATH_H
 
+/** \def ARELEM0(mat,r,c)
+* \brief macro function that give direct access to an element (0 origin)
+*/
+/* 0 origin */
+#define ARELEM0(mat,r,c) ((mat)->m[(r)*((mat)->clm)+(c)])
+
+/** \def ARELEM1(mat,row,clm)
+* \brief macro function that give direct access to an element (1 origin)
+*/
+/* 1 origin */
+#define ARELEM1(mat,row,clm) ARELEM0(mat,row-1,clm-1)
+
+/* matrix and vector utilities */
+/** \def multiMatrix3x4Vector3(dest,m,v)
+*  \brief macro function that multiplies a 3x4 matrix by a 3-dimension vector
+*/
+#define multiMatrix3x4Vector3(dest,m,v)\
+    dest[0] = m[0][0]*v[0] + m[0][1]*v[1] + m[0][2]*v[2] + m[0][3];\
+	dest[1] = m[1][0]*v[0] + m[1][1]*v[1] + m[1][2]*v[2] + m[1][3];\
+	dest[2] = m[2][0]*v[0] + m[2][1]*v[1] + m[2][2]*v[2] + m[2][3];
+
+/** \def euclidianDistanceMatrix3x4(result,src1,src2)
+*  \brief macro function that calculates the euclidian distance between two 3x4 tranformations matrices
+*/
+#define euclidianDistanceMatrix3x4(result,src1,src2)\
+    result = 0;\
+	result += pow(src1[0][3]-src2[0][3],2);\
+    result += pow(src1[1][3]-src2[1][3],2);\
+    result += pow(src1[2][3]-src2[2][3],2);\
+	result = sqrt(result);
+
+/** \def euclidianDistanceVector3(result,src1,src2)
+*  \brief macro function that calculates the euclidian distance between two points (3-dimension vectors)
+*/
+#define euclidianDistanceVector3(result,src1,src2)\
+    result = 0;\
+	result += pow(src1[0]-src2[0],2); \
+	result += pow(src1[1]-src2[1],2); \
+	result += pow(src1[2]-src2[2],2); \
+    result = sqrt(result);
+
+/** \def scalarProduct4(result,src1,src2)
+*  \brief macro function that calculates the scalar product of two 4-dimension vectors
+*/
+#define scalarProduct4(result,src1,src2)\
+    result = 0;\
+	result += src1[0]*src2[0];\
+	result += src1[1]*src2[1];\
+	result += src1[2]*src2[2];\
+	result += src1[3]*src2[3];
+
+/** \def copyMatrix3x4(dest,src)
+*  \brief macro function that copy a source 3x4 matrix in destination matrix
+*/
+#define copyMatrix3x4(dest,src)\
+    dest[0][0] = src[0][0]; dest[0][1] = src[0][1]; dest[0][2] = src[0][2]; dest[0][3] = src[0][3];\
+    dest[1][0] = src[1][0]; dest[1][1] = src[1][1]; dest[1][2] = src[1][2]; dest[1][3] = src[1][3];\
+    dest[2][0] = src[2][0]; dest[2][1] = src[2][1]; dest[2][2] = src[2][2]; dest[2][3] = src[2][3];
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// ============================================================================
-//	Public includes.
-// ============================================================================
-
-#include <math.h>
-#include <avrUtil.h>
-
-///*------------------------------------*/
-//double arsMultiGetTransMat(ARMarkerInfo *marker_infoL, int marker_numL,
-//                           ARMarkerInfo *marker_infoR, int marker_numR,
-//                           ARMultiMarkerInfoT *config);
-
-/**
-* \brief compute camera position in function of the multi-marker patterns (based on detected markers)
+//matrix.h
+/** \struct ARMat
+* \brief ARToolKit struct, matrix structure.
 *
-* calculate the transformation between the multi-marker patterns and the real camera. Based on
-* confident values of detected markers in the multi-markers patterns, a global position is return.
+* Defined the structure of the matrix type based on a dynamic allocation.
+* The matrix format is :<br>
+*  <---- clm --->		   <br>
+*  [ 10  20  30 ] ^		<br>
+*  [ 20  10  15 ] |		<br>
+*  [ 12  23  13 ] row	<br>
+*  [ 20  10  15 ] |		<br>
+*  [ 13  14  15 ] v		<br>
 *
-* \param marker_info list of detected markers (from arDetectMarker)
-* \param marker_num number of detected markers
-* \param config
-* \return
+* \param m content of matrix
+* \param row number of lines in matrix
+* \param clm number of column in matrix
 */
+typedef struct {
+	double *m;
+	int row;
+	int clm;
+} ARMat;
 
-double  arMultiGetTransMat(ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config);
+/** \struct ARVec
+* \brief ARToolKit struct, vector structure.
+*
+* The vector format is :<br>
+*  <---- clm ---><br>
+*  [ 10  20  30 ]<br>
+* Defined the structure of the vector type based on a dynamic allocation.
+* \param m content of vector
+* \param clm number of column in matrix
+*/
+typedef struct {
+   double *v;
+   int    clm;
+} ARVec;
 
-///arMulti.h
+// ARMat
+/** \fn ARMat *arMatrixAlloc(int row, int clm)
+* \brief creates a new matrix.
+*
+* Allocate and initialize a new matrix structure.
+* \param row number of line
+* \param clm number of column
+* \return the matrix structure, NULL if allocation is impossible
+*/
+ARMat*   arMatrixAlloc(int row, int clm);
+/** \fn int arMatrixFree(ARMat *m)
+* \brief deletes a matrix.
+*
+* Delete a matrix structure (deallocate used memory).
+* \param m matrix to delete
+* \return always 0
+*/
+int      arMatrixFree(ARMat *m);
 
-///matrix.h
-
-// ============================================================================
-//	Public types and defines.
-// ============================================================================
-
-// ============================================================================
-//	Public globals.
-// ============================================================================
-
-// ============================================================================
-//	Public functions.
-// ============================================================================
-
+/** \fn int arMatrixDup(ARMat *dest, ARMat *source)
+* \brief copy a matrix
+*
+* copy one matrix to another. The two ARMat must
+* be allocated.
+* \param dest the destination matrix of the copy
+* \param source the original matrix source
+* \return 0 if success, -1 if error (matrix with different size)
+*/
+int      arMatrixDup(ARMat *dest, ARMat *source);
+/** \fn ARMat *arMatrixAllocDup(ARMat *source)
+* \brief dumps a new matrix
+*
+* Allocates and recopy the original source matrix.
+* \param source the source matrix to copy
+* \return the matrix if success, NULL if error
+*/
+ARMat*   arMatrixAllocDup(ARMat *source);
 
 /** \fn int arMatrixMul(ARMat *dest, ARMat *a, ARMat *b)
 * \brief Multiply two matrix
@@ -72,8 +163,7 @@ double  arMultiGetTransMat(ARMarkerInfo *marker_info, int marker_num, ARMultiMar
 * \param b second matrix
 * \return 0 if success, -1 if error (multiplication impossible, or destination matrix have not comptabile size)
 */
-int    arMatrixMul(ARMat *dest, ARMat *a, ARMat *b);
-
+int      arMatrixMul(ARMat *dest, ARMat *a, ARMat *b);
 /** \fn ARMat *arMatrixAllocMul(ARMat *a, ARMat *b)
 * \brief Multiply two matrix with memory allocation.
 *
@@ -85,7 +175,7 @@ int    arMatrixMul(ARMat *dest, ARMat *a, ARMat *b);
 * \param b second matrix
 * \return the allocated matrix if success, NULL if error
 */
-ARMat  *arMatrixAllocMul(ARMat *a, ARMat *b);
+ARMat*   arMatrixAllocMul(ARMat *a, ARMat *b);
 
 /** \fn int arMatrixUnit(ARMat *unit)
 * \brief Creates a unit matrix.
@@ -96,8 +186,7 @@ ARMat  *arMatrixAllocMul(ARMat *a, ARMat *b);
 * \param unit the matrix to transform
 * \return 0 if success, -1 if error
 */
-int    arMatrixUnit(ARMat *unit);
-
+int      arMatrixUnit(ARMat *unit);
 /** \fn int arMatrixAllocUnit(int dim)
 * \brief Creates a unit matrix.
 *
@@ -106,7 +195,7 @@ int    arMatrixUnit(ARMat *unit);
 * \param dim dimensions of the unit matrix (square)
 * \return the matrix allocated if success, NULL if error
 */
-ARMat  *arMatrixAllocUnit(int dim);
+ARMat*   arMatrixAllocUnit(int dim);
 
 /** \fn int  arMatrixTrans(ARMat *dest, ARMat *source)
 * \brief transposes a matrix.
@@ -117,8 +206,7 @@ ARMat  *arMatrixAllocUnit(int dim);
 * \param source the source matrix
 * \return 0 if success, -1 if error (source and destination matrix have different size)
 */
-int    arMatrixTrans(ARMat *dest, ARMat *source);
-
+int      arMatrixTrans(ARMat *dest, ARMat *source);
 /** \fn ARMat *arMatrixAllocTrans(ARMat *source)
 * \brief transposes a matrix with allocation.
 *
@@ -127,7 +215,7 @@ int    arMatrixTrans(ARMat *dest, ARMat *source);
 * \param source the matrix to transpose
 * \return the allocated matrix if success, NULL if error (creation or transposition impossible)
 */
-ARMat  *arMatrixAllocTrans(ARMat *source);
+ARMat*   arMatrixAllocTrans(ARMat *source);
 
 /** \fn int arMatrixInv(ARMat *dest, ARMat *source)
 * \brief inverse a matrix.
@@ -140,8 +228,7 @@ ARMat  *arMatrixAllocTrans(ARMat *source);
 * \param source source matrix
 * \return 0 if success, -1 if error (not square matrix)
 */
-int    arMatrixInv(ARMat *dest, ARMat *source);
-
+int      arMatrixInv(ARMat *dest, ARMat *source);
 /** \fn int arMatrixSelfInv(ARMat *m)
 * \brief inverses a matrix.
 *
@@ -150,8 +237,7 @@ int    arMatrixInv(ARMat *dest, ARMat *source);
 * \param m the matrix to inverse
 * \return 0 if success, -1 if error
 */
-int    arMatrixSelfInv(ARMat *m);
-
+int      arMatrixSelfInv(ARMat *m);
 /** \fn int arMatrixAllocInv(ARMat *source)
 * \brief inverses a matrix.
 *
@@ -160,7 +246,7 @@ int    arMatrixSelfInv(ARMat *m);
 * \param source the matrix to inverse
 * \return the inversed matrix if success, NULL if error
 */
-ARMat  *arMatrixAllocInv(ARMat *source);
+ARMat*   arMatrixAllocInv(ARMat *source);
 
 /** \fn int arMatrixDet(ARMat *m)
 * \brief compute determinant of a matrix.
@@ -169,8 +255,7 @@ ARMat  *arMatrixAllocInv(ARMat *source);
 * \param m matrix source
 * \return the computed determinant
 */
-double arMatrixDet(ARMat *m);
-
+double   arMatrixDet(ARMat *m);
 /** \fn int arMatrixPCA( ARMat *input, ARMat *evec, ARVec *ev, ARVec *mean )
 * \brief compute the PCA of a matrix.
 *
@@ -181,8 +266,7 @@ double arMatrixDet(ARMat *m);
 * \param mean mean computed
 * \return 0 if success to compute, -1 otherwise
 */
-int    arMatrixPCA( ARMat *input, ARMat *evec, ARVec *ev, ARVec *mean );
-
+int      arMatrixPCA( ARMat *input, ARMat *evec, ARVec *ev, ARVec *mean );
 /** \fn int arMatrixPCA2( ARMat *input, ARMat *evec, ARVec *ev )
 * \brief compute the PCA of a matrix.
 *
@@ -192,27 +276,47 @@ int    arMatrixPCA( ARMat *input, ARMat *evec, ARVec *ev, ARVec *mean );
 * \param ev egein value computed
 * \return 0 if success to compute, -1 otherwise
 */
-int    arMatrixPCA2( ARMat *input, ARMat *evec, ARVec *ev );
-
+int      arMatrixPCA2( ARMat *input, ARMat *evec, ARVec *ev );
 /** \fn int arMatrixDisp(ARMat *m)
 * \brief display content of a matrix.
 *
 * Display in current console, the content of
 * the matrix. The display is done line by line.
 * \param m
-* \return 0
+* \return always 0
 */
-int    arMatrixDisp(ARMat *m);
+int      arMatrixDisp(ARMat *m);
+
+// ARVec
+/** \fn ARVec *arVecAlloc( int clm )
+* \brief creates a new vector.
+*
+* Allocates and initializes new vector structure.
+* \param clm dimension of vector
+* \return the allocated vector, NULL if error (impossible allocation)
+*/
+ARVec*   arVecAlloc( int clm );
+/** \fn int arVecFree( ARVec *v )
+* \brief delete a vector.
+*
+* Delete a vector structure (deallocate used memory).
+* \param v the vector to delete
+* \return always 0
+*/
+int      arVecFree( ARVec *v );
+/** \fn int arVecDisp( ARVec *v )
+* \brief display a vector.
+*
+* Display element of a vector.
+* \param v the vector to display
+* \return always 0
+*/
+int      arVecDisp( ARVec *v );
 
 /** \fn double arVecHousehold( ARVec *x )
-* \brief XXXBK
-*
-* XXXBK: for QR decomposition ?? (can't success to find french translation of this term)
-* \param x XXXBK
-* \return XXXBK
+* \brief compute the Householder Transformation (QR decomposition)
 */
-double arVecHousehold( ARVec *x );
-
+double   arVecHousehold( ARVec *x );
 /** \fn double arVecInnerproduct( ARVec *x, ARVec *y )
 * \brief Computes the inner product of 2 vectors.
 *
@@ -222,161 +326,45 @@ double arVecHousehold( ARVec *x );
 * \param y second vector source
 * \return the computed innerproduct
 */
-double arVecInnerproduct( ARVec *x, ARVec *y );
-
+double   arVecInnerproduct( ARVec *x, ARVec *y );
 /** \fn int arVecTridiagonalize( ARMat *a, ARVec *d, ARVec *e )
-* \brief XXXBK
-*
-* XXXBK
-* \param a XXXBK
-* \param d XXXBK
-* \param e XXXBK
-* \return XXXBK
+* \brief tridiagonalize the vectors
 */
-int    arVecTridiagonalize( ARMat *a, ARVec *d, ARVec *e );
+int      arVecTridiagonalize( ARMat *a, ARVec *d, ARVec *e );
 
-///matrix.h
+//matrix.h
 
-///ar.h
-/**
-* \brief compute camera position in function of detected markers.
-*
-* calculate the transformation between a detected marker and the real camera,
-* i.e. the position and orientation of the camera relative to the tracking mark.
-* \param marker_info the structure containing the parameters for the marker for
-*                    which the camera position and orientation is to be found relative to.
-*                    This structure is found using arDetectMarker.
-* \param center the physical center of the marker. arGetTransMat assumes that the marker
-*              is in x-y plane, and z axis is pointing downwards from marker plane.
-*              So vertex positions can be represented in 2D coordinates by ignoring the
-*              z axis information. The marker vertices are specified in order of clockwise.
-* \param width the size of the marker (in mm).
-* \param conv the transformation matrix from the marker coordinates to camera coordinate frame,
-*             that is the relative position of real camera to the real marker
-* \return always 0.
-*/
-double arGetTransMat( ARMarkerInfo *marker_info,
-                      double center[2], double width, double conv[3][4] );
+//ar.h
 
-/**
-* \brief compute camera position in function of detected marker with an history function.
-*
-* calculate the transformation between a detected marker and the real camera,
-* i.e. the position and orientation of the camera relative to the tracking mark. Since
-* this routine operate on previous values, the result are more stable (less jittering).
-*
-* \param marker_info the structure containing the parameters for the marker for
-*                    which the camera position and orientation is to be found relative to.
-*                    This structure is found using arDetectMarker.
-* \param prev_conv the previous transformation matrix obtain.
-* \param center the physical center of the marker. arGetTransMat assumes that the marker
-*              is in x-y plane, and z axis is pointing downwards from marker plane.
-*              So vertex positions can be represented in 2D coordinates by ignoring the
-*              z axis information. The marker vertices are specified in order of clockwise.
-* \param width the size of the marker (in mm).
-* \param conv the transformation matrix from the marker coordinates to camera coordinate frame,
-*             that is the relative position of real camera to the real marker
-* \return always 0.
-*/
-double arGetTransMatCont( ARMarkerInfo *marker_info, double prev_conv[3][4],
-                          double center[2], double width, double conv[3][4] );
-
-double arGetTransMat2( double rot[3][3], double pos2d[][2],
-                       double pos3d[][2], int num, double conv[3][4] );
-double arGetTransMat3( double rot[3][3], double ppos2d[][2],
-                     double ppos3d[][2], int num, double conv[3][4],
-                     double *dist_factor, double cpara[3][4] );
-double arGetTransMat4( double rot[3][3], double ppos2d[][2],
-                       double ppos3d[][3], int num, double conv[3][4] );
-double arGetTransMat5( double rot[3][3], double ppos2d[][2],
-                       double ppos3d[][3], int num, double conv[3][4],
-                       double *dist_factor, double cpara[3][4] );
-
-/**
-* \brief  XXXBK
-*
-*  XXXBK
-* \param rot XXXBK
-* \param trans XXXBK
-* \param cpara XXXBK
-* \param vertex XXXBK
-* \param pos2d XXXBK
-* \param num XXXBK
-* \return XXXBK
-*/
-double arModifyMatrix( double rot[3][3], double trans[3], double cpara[3][4],
-                             double vertex[][3], double pos2d[][2], int num );
-
-/**
+/** \fn int arGetAngle( double rot[3][3], double *wa, double *wb, double *wc )
 * \brief extract euler angle from a rotation matrix.
 *
 * Based on a matrix rotation representation, furnish the cprresponding euler angles.
 * \param rot the initial rotation matrix
-* \param wa XXXBK:which element ?
-* \param wb XXXBK:which element ?
-* \param wc XXXBK:which element ?
-* \return XXXBK
+* \return always 0
 */
-int arGetAngle( double rot[3][3], double *wa, double *wb, double *wc );
-
-/**
+int      arGetAngle( double rot[3][3], double *wa, double *wb, double *wc );
+/** \fn int arGetRot( double a, double b, double c, double rot[3][3] )
 * \brief create a rotation matrix with euler angle.
 *
 * Based on a euler description, furnish a rotation matrix.
-* \param a XXXBK:which element ?
-* \param b XXXBK:which element ?
-* \param c XXXBK:which element ?
 * \param rot the resulted rotation matrix
-* \return XXXBK
+* \return always 0
 */
-int arGetRot( double a, double b, double c, double rot[3][3] );
+int      arGetRot( double a, double b, double c, double rot[3][3] );
 
+/** \fn int arGetNewMatrix( double a, double b, double c, double trans[3], double trans2[3][4], double cpara[3][4], double ret[3][4] )
+* \brief contructs a new transformation matrix
+*  \param ret the result matrix
+*/
+int      arGetNewMatrix( double a, double b, double c, double trans[3], double trans2[3][4], double cpara[3][4], double ret[3][4] );
 /**
-* \brief XXXBK
-*
-* XXXBK
-* \param a XXXBK
-* \param b XXXBK
-* \param c XXXBK
-* \param trans XXXBK
-* \param trans2 XXXBK
-* \param cpara XXXBK
-* \param ret XXXBK
-* \return XXXBK
+*  \fn double arModifyMatrix( double rot[3][3], double trans[3], double cpara[3][4], double vertex[][3], double pos2d[][2], int num );
 */
-int arGetNewMatrix( double a, double b, double c,
-                    double trans[3], double trans2[3][4],
-                    double cpara[3][4], double ret[3][4] );
-
-/**
-* \brief XXXBK
-*
-* XXXBK:initial of what ?
-* \param marker_info XXXBK
-* \param cpara XXXBK
-* \param rot XXXBK
-* \return XXXBK
-*/
-int arGetInitRot( ARMarkerInfo *marker_info, double cpara[3][4], double rot[3][3] );
-
-double arsModifyMatrix( double rot[3][3], double trans[3], ARSParam *arsParam,
-                        double pos3dL[][3], double pos2dL[][2], int numL,
-                        double pos3dR[][3], double pos2dR[][2], int numR );
-
-
-///ar.h
-
+double   arModifyMatrix( double rot[3][3], double trans[3], double cpara[3][4], double vertex[][3], double pos2d[][2], int num );
+//ar.h
 #ifdef __cplusplus
 }
 #endif
-
-#include <avrPatternInfo.h>
-#include <avrMatrix3x4.h>
-
-int avrGetInitRot( avrPatternInfo *marker_info, double cpara[3][4], double rot[3][3] );
-double avrGetTransMat( avrPatternInfo *marker_info, double center[2], double width, avrMatrix3x4& conv );
-double avrGetTransMat3( double rot[3][3], double ppos2d[][2], double ppos3d[][2], int num, avrMatrix3x4& conv, double *dist_factor, double cpara[3][4] );
-double avrGetTransMatCont( avrPatternInfo *marker_info, avrMatrix3x4& prev_conv, double center[2], double width, avrMatrix3x4& conv);
-double avrMultiGetTransMat(avrPatternInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config);
 
 #endif

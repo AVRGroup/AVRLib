@@ -7,20 +7,111 @@ paramFile
 paramGet
 */
 
-#include <stdio.h>
-#include <math.h>
-//#include <AR/param.h>
-//#include <AR/matrix.h>
+// AR/param.h
+// AR/matrix.h
+
+#include <cstdio>
+#include <cmath>
 #include <stdarg.h>
 
 ///
-#include <avrParameters.h> // << inclui avrUtil
-#include <avrMath.h>       // << inclui avrUtil
+#include <avrParameters.h>
+#include <avrMath.h>
+#include <avrUtil.h>
 ///
 
 #define  PD_LOOP   3
 
 #define  AR_PARAM_CDMIN      12
+
+#define   AR_PARAM_NMIN         6
+#define   AR_PARAM_NMAX      1000
+#define   AR_PARAM_C34        100.0
+
+ARParam    arParam;
+ARSParam   arsParam;
+
+static int arGetLine2(int x_coord[], int y_coord[], int coord_num,
+                      int vertex[], double line[4][3], double v[4][2], double *dist_factor);
+static double norm( double a, double b, double c );
+static double dot( double a1, double a2, double a3, double b1, double b2, double b3 );
+
+static int  arParamDecomp( ARParam *source, ARParam *icpara, double trans[3][4] );
+
+
+int arInitCparam( ARParam *param )
+{
+    arImXsize = param->xsize;
+    arImYsize = param->ysize;
+    arParam = *param;
+
+    return(0);
+}
+
+int arGetLine(int x_coord[], int y_coord[], int coord_num,
+              int vertex[], double line[4][3], double v[4][2])
+{
+    return arGetLine2( x_coord, y_coord, coord_num, vertex, line, v, arParam.dist_factor );
+}
+
+int arsGetLine(int x_coord[], int y_coord[], int coord_num,
+               int vertex[], double line[4][3], double v[4][2], int LorR)
+{
+    if( LorR )
+        return arGetLine2( x_coord, y_coord, coord_num, vertex, line, v, arsParam.dist_factorL );
+    else
+        return arGetLine2( x_coord, y_coord, coord_num, vertex, line, v, arsParam.dist_factorR );
+}
+
+static int arGetLine2(int x_coord[], int y_coord[], int coord_num,
+                      int vertex[], double line[4][3], double v[4][2], double *dist_factor)
+{
+    ARMat    *input, *evec;
+    ARVec    *ev, *mean;
+    double   w1;
+    int      st, ed, n;
+    int      i, j;
+
+    ev     = arVecAlloc( 2 );
+    mean   = arVecAlloc( 2 );
+    evec   = arMatrixAlloc( 2, 2 );
+    for( i = 0; i < 4; i++ ) {
+        w1 = (double)(vertex[i+1]-vertex[i]+1) * 0.05 + 0.5;
+        st = (int)(vertex[i]   + w1);
+        ed = (int)(vertex[i+1] - w1);
+        n = ed - st + 1;
+        input  = arMatrixAlloc( n, 2 );
+        for( j = 0; j < n; j++ ) {
+            arParamObserv2Ideal( dist_factor, x_coord[st+j], y_coord[st+j],
+                                 &(input->m[j*2+0]), &(input->m[j*2+1]) );
+        }
+        if( arMatrixPCA(input, evec, ev, mean) < 0 ) {
+            arMatrixFree( input );
+            arMatrixFree( evec );
+            arVecFree( mean );
+            arVecFree( ev );
+            return(-1);
+        }
+        line[i][0] =  evec->m[1];
+        line[i][1] = -evec->m[0];
+        line[i][2] = -(line[i][0]*mean->v[0] + line[i][1]*mean->v[1]);
+        arMatrixFree( input );
+    }
+    arMatrixFree( evec );
+    arVecFree( mean );
+    arVecFree( ev );
+
+    for( i = 0; i < 4; i++ ) {
+        w1 = line[(i+3)%4][0] * line[i][1] - line[i][0] * line[(i+3)%4][1];
+        if( w1 == 0.0 ) return(-1);
+        v[i][0] = (  line[(i+3)%4][1] * line[i][2]
+                   - line[i][1] * line[(i+3)%4][2] ) / w1;
+        v[i][1] = (  line[i][0] * line[(i+3)%4][2]
+                   - line[(i+3)%4][0] * line[i][2] ) / w1;
+    }
+
+    return(0);
+}
 
 int arParamChangeSize( ARParam *source, int xsize, int ysize, ARParam *newparam )
 {
@@ -44,48 +135,6 @@ int arParamChangeSize( ARParam *source, int xsize, int ysize, ARParam *newparam 
 
     return 0;
 }
-
-int arsParamChangeSize( ARSParam *source, int xsize, int ysize, ARSParam *newparam )
-{
-    double  scale;
-    int     i;
-
-    newparam->xsize = xsize;
-    newparam->ysize = ysize;
-
-    scale = (double)xsize / (double)(source->xsize);
-    for( i = 0; i < 4; i++ ) {
-        newparam->matL[0][i] = source->matL[0][i] * scale;
-        newparam->matL[1][i] = source->matL[1][i] * scale;
-        newparam->matL[2][i] = source->matL[2][i];
-    }
-    for( i = 0; i < 4; i++ ) {
-        newparam->matR[0][i] = source->matR[0][i] * scale;
-        newparam->matR[1][i] = source->matR[1][i] * scale;
-        newparam->matR[2][i] = source->matR[2][i];
-    }
-    for( i = 0; i < 4; i++ ) {
-        newparam->matL2R[0][i] = source->matL2R[0][i];
-        newparam->matL2R[1][i] = source->matL2R[1][i];
-        newparam->matL2R[2][i] = source->matL2R[2][i];
-    }
-
-    newparam->dist_factorL[0] = source->dist_factorL[0] * scale;
-    newparam->dist_factorL[1] = source->dist_factorL[1] * scale;
-    newparam->dist_factorL[2] = source->dist_factorL[2] / (scale*scale);
-    newparam->dist_factorL[3] = source->dist_factorL[3];
-
-    newparam->dist_factorR[0] = source->dist_factorR[0] * scale;
-    newparam->dist_factorR[1] = source->dist_factorR[1] * scale;
-    newparam->dist_factorR[2] = source->dist_factorR[2] / (scale*scale);
-    newparam->dist_factorR[3] = source->dist_factorR[3];
-
-    return 0;
-}
-
-static double norm( double a, double b, double c );
-static double dot( double a1, double a2, double a3,
-                   double b1, double b2, double b3 );
 
 int  arParamDecomp( ARParam *source, ARParam *icpara, double trans[3][4] )
 {
@@ -166,62 +215,12 @@ int  arParamDecompMat( double source[3][4], double cpara[3][4], double trans[3][
     return 0;
 }
 
-int arsParamGetMat( double matL[3][4], double matR[3][4],
-                    double cparaL[3][4], double cparaR[3][4], double matL2R[3][4] )
-{
-    ARMat    *t1, *t2, *t3;
-    double   transL[3][4], transR[3][4];
-    int      i, j;
-
-    arParamDecompMat( matL, cparaL, transL );
-    arParamDecompMat( matR, cparaR, transR );
-
-    t1 = arMatrixAlloc( 4, 4 );
-    t2 = arMatrixAlloc( 4, 4 );
-    for( j = 0; j < 3; j++ ) {
-       for( i = 0; i < 4; i++ ) {
-            t1->m[j*4+i] = transL[j][i];
-            t2->m[j*4+i] = transR[j][i];
-        }
-    }
-    t1->m[12] = t1->m[13] = t1->m[14] = 0.0;
-    t1->m[15] = 1.0;
-    t2->m[12] = t2->m[13] = t2->m[14] = 0.0;
-    t2->m[15] = 1.0;
-
-    if( arMatrixSelfInv(t1) != 0 ) {
-        arMatrixFree( t1 );
-        arMatrixFree( t2 );
-        return -1;
-    }
-    t3 = arMatrixAllocMul(t2, t1);
-    if( t3 == NULL ) {
-        arMatrixFree( t1 );
-        arMatrixFree( t2 );
-        return -1;
-    }
-
-    for( j = 0; j < 3; j++ ) {
-       for( i = 0; i < 4; i++ ) {
-            matL2R[j][i] = t3->m[j*4+i];
-        }
-    }
-
-    arMatrixFree( t1 );
-    arMatrixFree( t2 );
-    arMatrixFree( t3 );
-
-    return 0;
-}
-
-
 static double norm( double a, double b, double c )
 {
     return( sqrt( a*a + b*b + c*c ) );
 }
 
-static double dot( double a1, double a2, double a3,
-		   double b1, double b2, double b3 )
+static double dot( double a1, double a2, double a3, double b1, double b2, double b3 )
 {
     return( a1 * b1 + a2 * b2 + a3 * b3 );
 }
@@ -238,40 +237,6 @@ int arParamDisp( ARParam *param )
         for( i = 0; i < 4; i++ ) printf("%7.5f ", param->mat[j][i]);
         printf("\n");
     }
-    printf("--------------------------------------\n");
-
-    return 0;
-}
-
-int arsParamDisp( ARSParam *sparam )
-{
-    int     i, j;
-
-    printf("--------------------------------------\n");
-
-    printf("SIZE = %d, %d\n", sparam->xsize, sparam->ysize);
-    printf("-- Left --\n");
-    printf("Distotion factor = %f %f %f %f\n", sparam->dist_factorL[0],
-            sparam->dist_factorL[1], sparam->dist_factorL[2], sparam->dist_factorL[3] );
-    for( j = 0; j < 3; j++ ) {
-        for( i = 0; i < 4; i++ ) printf("%7.5f ", sparam->matL[j][i]);
-        printf("\n");
-    }
-
-    printf("-- Right --\n");
-    printf("Distotion factor = %f %f %f %f\n", sparam->dist_factorR[0],
-            sparam->dist_factorR[1], sparam->dist_factorR[2], sparam->dist_factorR[3] );
-    for( j = 0; j < 3; j++ ) {
-        for( i = 0; i < 4; i++ ) printf("%7.5f ", sparam->matR[j][i]);
-        printf("\n");
-    }
-
-    printf("-- Left => Right --\n");
-    for( j = 0; j < 3; j++ ) {
-        for( i = 0; i < 4; i++ ) printf("%7.5f ", sparam->matL2R[j][i]);
-        printf("\n");
-    }
-
     printf("--------------------------------------\n");
 
     return 0;
@@ -332,8 +297,7 @@ int arParamIdeal2Observ( const double dist_factor[4], const double ix, const dou
     return(0);
 }
 
-int  arParamGet( double global[][3], double screen[][2], int num,
-                 double mat[3][4] )
+int  arParamGet( double global[][3], double screen[][2], int num, double mat[3][4] )
 {
     ARMat     *mat_a, *mat_at, *mat_r, mat_cpara;
     ARMat     *mat_wm1, *mat_wm2;
@@ -622,48 +586,3 @@ int    arParamLoad( const char *filename, int num, ARParam *param, ...)
     return 0;
 }
 
-int    arsParamSave( char *filename, ARSParam *sparam )
-{
-    FILE        *fp;
-
-    fp = fopen( filename, "wb" );
-    if( fp == NULL ) return -1;
-
-#ifdef AR_LITTLE_ENDIAN
-    byteswap2( sparam );
-#endif
-    if( fwrite( sparam, sizeof(ARSParam), 1, fp ) != 1 ) {
-        fclose(fp);
-#ifdef AR_LITTLE_ENDIAN
-        byteswap2( sparam );
-#endif
-        return -1;
-    }
-#ifdef AR_LITTLE_ENDIAN
-    byteswap2( sparam );
-#endif
-
-    fclose(fp);
-
-    return 0;
-}
-
-int    arsParamLoad( char *filename, ARSParam *sparam )
-{
-    FILE        *fp;
-
-    fp = fopen( filename, "rb" );
-    if( fp == NULL ) return -1;
-
-    if( fread( sparam, sizeof(ARSParam), 1, fp ) != 1 ) {
-        fclose(fp);
-        return -1;
-    }
-#ifdef AR_LITTLE_ENDIAN
-    byteswap2( sparam );
-#endif
-
-    fclose(fp);
-
-    return 0;
-}

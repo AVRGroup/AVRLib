@@ -54,8 +54,6 @@
 		<Unit filename="avrApplication.h" />
 		<Unit filename="avrGraphics.cpp" />
 		<Unit filename="avrGraphics.h" />
-		<Unit filename="avrMarker.cpp" />
-		<Unit filename="avrMarker.h" />
 		<Unit filename="avrMath.cpp" />
 		<Unit filename="avrMath.h" />
 		<Unit filename="avrMatrix.cpp" />
@@ -64,8 +62,6 @@
 		<Unit filename="avrMatrix3x4.h" />
 		<Unit filename="avrParameters.cpp" />
 		<Unit filename="avrParameters.h" />
-		<Unit filename="avrPatt.cpp" />
-		<Unit filename="avrPatt.h" />
 		<Unit filename="avrPattern.cpp" />
 		<Unit filename="avrPattern.h" />
 		<Unit filename="avrPatternInfo.h" />
@@ -81,6 +77,8 @@
 		<Unit filename="avrUtil.h" />
 		<Unit filename="avrVideo.cpp" />
 		<Unit filename="avrVideo.h" />
+		<Unit filename="avrVision.cpp" />
+		<Unit filename="avrVision.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -88,7 +86,7 @@
 			<lib_finder disable_auto="1" />
 			<DoxyBlocks>
 				<comment_style block="0" line="1" />
-				<doxyfile_project project_number="1.0" output_directory="doxygen" />
+				<doxyfile_project project_number="1.0.1" output_directory="doxygen" />
 				<doxyfile_build />
 				<doxyfile_warnings />
 				<doxyfile_alpha_index alphabetical_index="0" />

@@ -1,3 +1,12 @@
+/*
+  Name:        avrPatternInfo.h
+  Version      1.0.1
+  Author:      Douglas Oliveira, Rodrigo L. S. Silva
+  Date:        10/10/2012
+  Last Update: 09/10/2014
+  Description: class in substitution to structure ARMarkerInfo
+*/
+
 #ifndef AVR_PATTERN_INFO_H_INCLUDED
 #define AVR_PATTERN_INFO_H_INCLUDED
 

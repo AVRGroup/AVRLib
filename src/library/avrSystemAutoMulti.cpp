@@ -1,8 +1,9 @@
 #include <iostream>
+#include <cmath>
 #include <avrSystemAutoMulti.h>	// << inclui avrPattern e avrMatrix3x4
 #include <avrGraphics.h>		// << inclui avrParameters que inclui avrUtil
-#include <avrMath.h>			// << inclui avrUtil
-#include <avrUtil.h>
+#include <avrVision.h>
+#include <avrMath.h>
 
 #define RATE_QUALITY    1.1
 
@@ -13,7 +14,7 @@ static double   theta       = 0.0;  // arco coseno do prod. escalar entre os qua
 static bool     firstFrame  = true; // representa o primeiro quadro em que o marcador principal está visivel
 
 // constructor
-avrSystemAutoMulti::avrSystemAutoMulti(int holderMode, void (*displayFunc)(void)) : avrSystemMarker(){
+avrSystemAutoMulti::avrSystemAutoMulti(BASE_SELECTION_MODE holderMode, void (*displayFunc)(void)) : avrSystemMarker(){
     this->definedHolderMode = holderMode;
 
     this->drawFunc = NULL;
@@ -22,7 +23,7 @@ avrSystemAutoMulti::avrSystemAutoMulti(int holderMode, void (*displayFunc)(void)
     this->initialize();
 }
 
-avrSystemAutoMulti::avrSystemAutoMulti(int holderMode, void (*displayFunc)(int )) : avrSystemMarker()
+avrSystemAutoMulti::avrSystemAutoMulti(BASE_SELECTION_MODE holderMode, void (*displayFunc)(int )) : avrSystemMarker()
 {
    this->definedHolderMode = holderMode;
 
@@ -123,7 +124,6 @@ bool avrSystemAutoMulti::setCameraTransformation(avrPatternInfo *marker_info, in
 // atualiza as relações entre o principal e os demais marcadores
 void avrSystemAutoMulti::updateTransf(){
 
-    //loadIdentityMatrix3x4(this->transf[holderMarker]);
     for(unsigned int i = 0; i < this->patts.size(); i++ ){
 		if (i == holderMarker) continue;
 

@@ -1,18 +1,19 @@
 /*
   Name:        avrApplication.h
-  Version      0.1
-  Author:      Felipe Caetano, Luiz Maurílio, Rodrigo L. S. Silva
+  Version      1.0.1
+  Author:      Douglas Oliveira, Felipe Caetano, Luiz Maurílio, Rodrigo L. S. Silva
   Date:        10/10/2012
-  Last Update: 10/10/2012
+  Last Update: 09/10/2014
   Description: Main class to control the system.
 */
+
+#ifndef AVR_APPLICATION_H
+#define AVR_APPLICATION_H
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-#include <cstdlib>
-#include <iostream>
 #include <GL/gl.h>
 #include <GL/glut.h>
 
@@ -23,9 +24,6 @@
 #include <avrSystemSingle.h>
 #include <avrSystemAutoMulti.h>
 #include <avrSystemMulti.h>
-
-#ifndef PIXEL_LAB_H
-#define PIXEL_LAB_H
 
 /** \class avrApplication avrApplication.h "avrApplication.h"
  * \brief main class of the applications
@@ -39,13 +37,13 @@ class avrApplication
       //! vector with the markers systems that aggregate the application
       std::vector<avrSystemMarker*>    markers;
 
+      //! \cond
+
       bool  thresholdMode; // if displays the threshold image or not
       int   thresh;        // threshold value
       int   count;         // counter frames
 
       // Callbacks
-      //! reshape callback
-      void (*reshapeFunc)(int w, int h);
       //! visibility callback
       void (*visibilityFunc)(int visible);
       //! special keyboard events callback
@@ -57,8 +55,11 @@ class avrApplication
       //! motion events callback
       void (*motionEvent)( int x, int y );
 
+      //! \endcond
+
    public:
-      avrApplication();    // default constructor
+      //! \param windowName a name for the glut window
+      avrApplication(const std::string& windowName = "AVRLib Project");    // constructor
       ~avrApplication();   // destructor
 
       //! sets a new markers system
@@ -71,16 +72,25 @@ class avrApplication
       int               numberPatts();
 
       // Video output options
-      //! says in which window the main video will be displayed
+      //! says in which mini window the main video will be displayed
       void    setMainVideoOutput(unsigned int xwin, unsigned int ywin);
-      //! enable threshold image visualization (by default in main video output)
+      //! enable threshold image visualization in the mini window defined by parameters (by default in main video output)
       void    enableModeThreshold(unsigned int xwin = 0, unsigned int ywin = 0);
       //! disable threshold image visualization
       void    disableModeThreshold();
       //! checks if threshold image visualization is enabled or disabled
       bool    isThresholdMode();
 
-      //! gets theshold value
+      //! gets the horizontal size of the video image
+      int     getVideoWidth();
+      //! gets the vertical size of the video image
+      int     getVideoHeight();
+      //! gets the horizontal size of the window
+      int     getWindowWidth();
+      //! gets the vertical size of the window
+      int     getWindowHeight();
+
+      //! gets threshold value
       int     getThreshHold();
       //! gets frame rate value
       double  getFrameRate();
@@ -89,7 +99,7 @@ class avrApplication
 
       //! changes the context renderization for 2D
       void    renderContext2D();
-      //! changes the context renderization for 3D and sets video output (by default in main video output)
+      //! changes the context renderization for 3D and sets video output window (by default in main video output)
       void    renderContext3D(unsigned int xwin = 0, unsigned int ywin = 0);
 
       // Default Parameters for some Camera and Threshold
@@ -101,35 +111,35 @@ class avrApplication
    // User Parameters for pattern
    public:
       //! creates a new "Single markers system" and registers a new marker pattern in this system (secondary display callback)
-      void addPattern(const char *filename, double patt_width, double *patt_center = NULL,void (*drawFunction)(void) = NULL); //SINGLE_MARKER
+      void addPattern(const std::string& filename, double patt_width, double *patt_center = NULL,void (*drawFunction)(void) = NULL); //SINGLE_MARKER
       //! creates a new "Single markers system" and registers a new marker pattern in this system (main display callback)
-      void addPattern(const char *filename, double patt_width, double *patt_center = NULL,void (*drawFunction)(int ) = NULL); //SINGLE_MARKER
+      void addPattern(const std::string& filename, double patt_width, double *patt_center = NULL,void (*drawFunction)(int ) = NULL); //SINGLE_MARKER
       //! creates a new "AutoMulti markers system" and registers the new markers patterns in this system (secondary display callback)
-      void addPatterns(const char *filename, int holderMode, void (*drawFunction)(void) = NULL); // AUTO_MULTI
+      void addPatterns(const std::string& filename, BASE_SELECTION_MODE, void (*drawFunction)(void) = NULL); // AUTO_MULTI
       //! creates a new "AutoMulti markers system" and registers the new markers patterns in this system (main display callback)
-      void addPatterns(const char *filename, int holderMode, void (*drawFunction)(int ) = NULL); // AUTO_MULTI
+      void addPatterns(const std::string& filename, BASE_SELECTION_MODE, void (*drawFunction)(int ) = NULL); // AUTO_MULTI
       //! creates a new "Multi markers system" and registers the new markers patterns in this system (secondary display callback)
-      void addPatterns(const char *filename, void (*drawFunction)(void) = NULL); //MULTI
+      void addPatterns(const std::string& filename, void (*drawFunction)(void) = NULL); //MULTI
       //! creates a new "AutoMulti markers system" and registers the new markers patterns in this system (main display callback)
-      void addPatterns(const char *filename, void (*drawFunction)(int ) = NULL); //MULTI
+      void addPatterns(const std::string& filename, void (*drawFunction)(int ) = NULL); //MULTI
 
       // User Parameters threshold and camera
       //! sets a new threshold value
       void setThreshold(int thresh);
       /** \brief sets the camera files and defines the number of video outputs (by default only the main video output)
        *
-       * This function inicializes the camera configuration and the intrinsics parameters of the camera. At end, the window is created.
-       * \param vconf camera configuration path file
-       * \param cparam_name path with intrinsics parameters file of the camera
-       * \param xwin default is 0
-       * \param ywin default is 0
-       * \return void
+       * This function initializes the camera configuration and the intrinsics parameters of the camera. At end, the window is created.
+       * It's possible to extend the window by mini windows of size two times lower than the main video window, setting the two last parameters
+       * \param camConfigName camera configuration path file
+       * \param camParamName path with intrinsics parameters file of the camera
+       * \param xWinNum number of mini window to be created to left of the main video
+       *    \note the main video are two mini windows in x-direction (ie xWinNum <= 2 no effect)
+       * \param yWinNum number of mini window to be created below the video
+       *    \note in y-direction, yWinNum > 0 has effect
        */
-      void setCameraFiles(char *vconf, char *cparam_name, int xwin = 0, int ywin = 0);
+      void setCameraFiles(const std::string& camConfigName, const std::string& camParamName, int xWinNum = 0, int yWinNum = 0);
 
       // User set display callback
-      //! sets reshape callback
-      void setReshapeCallback     (void (*reshapeFunction)(int w, int h));
       //! sets visibility callback
       void setVisibilityCallback  (void (*visibilityFunction)(int visible));
       //! sets special keyboard events callback
@@ -157,11 +167,10 @@ class avrApplication
        * \param authors authors names of application
        * \param info more informations
        * \param requiredMarkers required markers by application
-       * \return void
        */
-      void setProjectInfo(std::string projectName, std::string authors, std::string info, std::string requiredMarkers);
+      void setProjectInfo(const std::string& projectName, const std::string& authors, const std::string& info, const std::string& requiredMarkers);
       //! shows project information in the terminal
       void printProjectInfo();
 };
 
-#endif // PIXEL_LAB_H
+#endif // AVR_APPLICATION_H

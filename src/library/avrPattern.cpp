@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
-#include <avrPatt.h>
 #include <avrPattern.h>
+#include <avrUtil.h>
 
 using namespace std;
 
@@ -20,7 +20,7 @@ avrPattern::avrPattern(){
     this->patt_pos3D = new avrMatrix(4, 3);
 }
 
-avrPattern::avrPattern(const char *filename, double patt_width, double *patt_center)
+avrPattern::avrPattern(const string& filename, double patt_width, double *patt_center)
 {
     this->patt_width    = patt_width;
     this->patt_visible  = false;
@@ -38,10 +38,10 @@ avrPattern::avrPattern(const char *filename, double patt_width, double *patt_cen
         this->patt_center[1] = 0.0;
     }
 
-    if(filename){
-        if((this->patt_id = arLoadPatt(filename)) < 0 ) {
+    if(!filename.empty()){
+        if((this->patt_id = arLoadPatt(filename.c_str())) < 0 ) {
             cout << "pattern load error !!\n";
-            exit(0);
+            exit(1);
         } else {
             //cout << "-" << patt_id << endl;
         }

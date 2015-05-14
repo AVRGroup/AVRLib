@@ -4,33 +4,98 @@
  *   at http://v4l2spec.bytesex.org/spec/a13010.htm
  *   Simon Goodall <sg@ecs.soton.ac.uk>
  */
+
 #ifdef __linux
 
 #include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/mman.h>
-
-#include <linux/types.h>
-#include <linux/videodev2.h>
-
-#include "ccvt.h"
 
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-//#include <AR/video.h>
-#include <avrUtil.h>
-#include <avrVideo.h>
-#include <avrGraphics.h>
-#include <iostream>
 
-#define MAXCHANNEL   10
+// AR/video.h
+ #include <avrVideo.h>
 
-using namespace std;
+/*
+ * \brief display the video option (multiple video inputs)
+ *
+ * Companion function to arVideoDispOption, for multiple video sources.
+ */
+static AR_DLL_API  int				ar2VideoDispOption(void);
+
+/*
+ * \brief open a video source (multiple video inputs)
+ *
+ *  Companion function to arVideoOpen for multiple video sources.
+ *  This function can be called multiple times to open multiple
+ *  video streams. The maximum number of streams is dependent on
+ *  the operating system and the performance characteristics of
+ *  the host CPU and video capture infrastructure.
+ *
+ * \param config string of the selected video configuration.
+ * \return If the video path was successfully opened, this
+ * function returns a pointer to an AR2VideoParamT structure,
+ * an opaque structure which holds information and configuration
+ * for the video stream. This paramater should then be passed
+ * to other ar2Video* functions to specify which video stream
+ * is being operated upon. If the video path was not successfully
+ * opened, NULL will be returned.
+ s*/
+static AR_DLL_API  AR2VideoParamT  *ar2VideoOpen(char *config);
+
+/*
+ * \brief close a video source (multiple video inputs)
+ *
+ * Companion function to arVideoClose for multiple video sources.
+ * \param vid a video handle structure for multi-camera grabbing.
+ */
+static AR_DLL_API  int				ar2VideoClose(AR2VideoParamT *vid);
+
+/*
+ * \brief start the capture of a video source (multiple video inputs)
+ *
+ * Companion function to arVideoCapStart for multiple video sources.
+ * \param vid a video handle structure for multi-camera grabbing
+ */
+static AR_DLL_API  int				ar2VideoCapStart(AR2VideoParamT *vid);
+
+/*
+ * \brief call for the next grabbed video frame of a video source (multiple video inputs)
+ *
+ * Companion function to arVideoCapNext for multiple video sources.
+ * \param vid a video handle structure for multi-camera grabbing
+ */
+static AR_DLL_API  int				ar2VideoCapNext(AR2VideoParamT *vid);
+
+/*
+ * \brief stop the capture of a video source (multiple video inputs)
+ *
+ * Companion function to arVideoCapStop for multiple video sources.
+ * \param vid a video handle structure for multi-camera grabbing
+ */
+static AR_DLL_API  int				ar2VideoCapStop(AR2VideoParamT *vid);
+
+/*
+ * \brief get a video image from a video source (multiple video inputs)
+ *
+ * Companion function to arVideoGetImage for multiple video sources.
+ * \param vid a video handle structure for multi-camera grabbing
+ */
+static AR_DLL_API  ARUint8			*ar2VideoGetImage(AR2VideoParamT *vid);
+
+/*
+ * \brief get the video image size of a video source (multiple video inputs)
+ *
+ * Companion function to arVideoInqSize for multiple video sources.
+ * \param vid a video handle structure for multi-camera grabbing
+ */
+static AR_DLL_API  int				ar2VideoInqSize(AR2VideoParamT *vid, int *x, int *y);
+
+/* Substitui ccvt_yuyv_rgb32 da biblioteca ccvt.h */
+static void avr_ccvt_yuyv_rgb24(int width, int height, ARUint8 * buffer, ARUint8 * videoBuffer);
 
 static AR2VideoParamT   *gVid = NULL;
 
@@ -637,7 +702,6 @@ AR2VideoParamT *ar2VideoOpen( char *config_in )
         return 0;
     }
 
-
     // Attempt to set some camera controls
     setControl(vid->fd, V4L2_CID_BRIGHTNESS, vid->brightness);
     setControl(vid->fd, V4L2_CID_CONTRAST, vid->contrast);
@@ -720,7 +784,7 @@ AR2VideoParamT *ar2VideoOpen( char *config_in )
         return 0;
     }
 
-    for (vid->n_buffers = 0; vid->n_buffers < req.count; ++vid->n_buffers)
+    for (vid->n_buffers = 0; vid->n_buffers < (int)req.count; ++vid->n_buffers)
     {
         struct v4l2_buffer buf;
         memset(&buf, 0, sizeof(buf));
@@ -857,7 +921,6 @@ int ar2VideoCapStop( AR2VideoParamT *vid )
     return 0;
 }
 
-
 ARUint8 *ar2VideoGetImage( AR2VideoParamT *vid )
 {
     ARUint8 *buffer;
@@ -882,8 +945,6 @@ ARUint8 *ar2VideoGetImage( AR2VideoParamT *vid )
     buffer = (ARUint8*)vid->buffers[buf.index].start;
     vid->video_cont_num = buf.index;
 
-//    cout << "TAMANHO: " << vid->buffers[buf.index].length << endl;
-
     //TODO: Add other video format conversions.
     if (vid->palette == V4L2_PIX_FMT_YUYV)
     {
@@ -904,46 +965,8 @@ int ar2VideoInqSize(AR2VideoParamT *vid, int *x,int *y)
 
     return 0;
 }
-/**
-void avr_ccvt_yuyv_rgb24(int width, int height, ARUint8 * buffer, ARUint8 * videoBuffer)
-{
-    int first, mid, last, a;
-    for(int x = 0, y = 0; y < height * width * 3; x += 4, y += 6)
-    {
-        first = (buffer[x] + buffer[x+2])/2 - 16;
-        last = buffer[x+1] - 128;
-        mid = buffer[x+3] - 128;
 
-        a = (1.164 * first) + (2.018 * last);
-        if(a > 255) a = 255;
-        if(a < 0) a = 0;
-        videoBuffer[y] = a;
-
-        a = 1.164 * first - (0.813 * mid) - (0.391 * last);
-        if(a > 255) a = 255;
-        if(a < 0) a = 0;
-        videoBuffer[y+1] = a;
-
-        a = (1.164 * first) + (1.596 * mid);
-        if(a > 255) a = 255;
-        if(a < 0) a = 0;
-        videoBuffer[y+2] = a;
-
-        a = 1.164 * ((buffer[x] + buffer[x+2])/2 - 16) + 2.018 * (buffer[x+1] - 128);
-        if(a > 255) a = 255;
-        if(a < 0) a = 0;
-        videoBuffer[y+4] = a;
-        a = 1.164 * ((buffer[x] + buffer[x+2])/2 - 16) - 0.813 * (buffer[x+3] - 128) - 0.391 * (buffer[x+1] - 128);
-        if(a > 255) a = 255;
-        if(a < 0) a = 0;
-        videoBuffer[y+3] = a;
-        a = 1.164 * ((buffer[x] + buffer[x+2])/2 - 16) + 1.596 * (buffer[x+3] - 128);
-        if(a > 255) a = 255;
-        if(a < 0) a = 0;
-        videoBuffer[y+5] = a;
-    }
-}**/
-
+//! Substitui ccvt_yuyv_rgb32 da biblioteca ccvt.h
 void avr_ccvt_yuyv_rgb24(int width, int height, ARUint8 * buffer, ARUint8 * videoBuffer)
 {
 
@@ -998,16 +1021,5 @@ void avr_ccvt_yuyv_rgb24(int width, int height, ARUint8 * buffer, ARUint8 * vide
         videoBuffer[i+5] = (unsigned char)r;
     }
 }
-/*
-void avr_ccvt_yuyv_rgb24(int width, int height, ARUint8 * buffer, ARUint8 * videoBuffer)
-{
-    for(int x = 0; x < 614398; x += 3)
-    {
-        videoBuffer[x+2] = 1.164 * (buffer[x] - 16) + 2.018 * (buffer[x+1] - 128);
-        videoBuffer[x+1] = 1.164 * (buffer[x] - 16) - 0.813 * (buffer[x+2] - 128) - 0.391 * (buffer[x+1] - 128);
-        videoBuffer[x] = 1.164 * (buffer[x] - 16) + 1.596 * (buffer[x+2] - 128);
-    }
-}
-*/
 
 #endif

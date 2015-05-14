@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+
 #include <avrUtil.h>
 #include <avrMatrix3x4.h>
 
@@ -12,18 +13,18 @@ avrMatrix3x4::avrMatrix3x4() : avrMatrix(4, 4)
 
 avrMatrix3x4::avrMatrix3x4(const avrMatrix& mat) : avrMatrix(4 ,4)
 {
-   for(int i = 0; i < mat.row() && i < 3; i++){
-      for(int j = 0; j < mat.column() && j < 4; j++){
-         this->matrixx[i * 4 + j] = mat.access(i, j);
+   for(unsigned int i = 0; i < mat.row() && i < 3; i++){
+      for(unsigned int j = 0; j < mat.column() && j < 4; j++){
+         this->data[i * 4 + j] = mat.access(i, j);
       }
    }
 }
 
 avrMatrix3x4::avrMatrix3x4(double matrix[3][4]) : avrMatrix(4, 4)
 {
-   for(int i = 0; i < 3; i++){
-      for(int j = 0; j < 4; j++){
-         this->matrixx[i * 4 + j] = matrix[i][j];
+   for(unsigned int i = 0; i < 3; i++){
+      for(unsigned int j = 0; j < 4; j++){
+         this->data[i * 4 + j] = matrix[i][j];
       }
    }
 }
@@ -72,12 +73,12 @@ void avrMatrix3x4::print(string name, int decimals) const
 }
 
 /* ***** Gets ***** */
-int avrMatrix3x4::row() const
+unsigned int avrMatrix3x4::row() const
 {
    return 3;
 }
 
-int avrMatrix3x4::column() const
+unsigned int avrMatrix3x4::column() const
 {
    return 4;
 }
@@ -118,7 +119,7 @@ avrMatrix3x4& avrMatrix3x4::operator= (const avrMatrix3x4& mat2)
 {
    for(int i = 0; i < 3; i++){
       for(int j = 0; j < 4; j++){
-         this->matrixx[i * 4 + j] = mat2.access(i, j);
+         this->data[i * 4 + j] = mat2.access(i, j);
       }
    }
 
@@ -172,10 +173,10 @@ void avrMatrix3x4::setMatWithQuatAndPos(double quat[4], double pos[3])
       for(int j = 0; j < 4; j++)
          this->add(mat[i][j], i, j);
 
-   this->matrixx[3 * 4 + 0] = 0.0;
-   this->matrixx[3 * 4 + 1] = 0.0;
-   this->matrixx[3 * 4 + 2] = 0.0;
-   this->matrixx[3 * 4 + 3] = 1.0;
+   this->data[3 * 4 + 0] = 0.0;
+   this->data[3 * 4 + 1] = 0.0;
+   this->data[3 * 4 + 2] = 0.0;
+   this->data[3 * 4 + 3] = 1.0;
 }
 
 // Special Gets
