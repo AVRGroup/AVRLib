@@ -23,6 +23,8 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <cmath>
 
 using namespace std;
@@ -60,10 +62,10 @@ int main(int argc, char **argv)
                           "This test checks the collision between the racket and virtual float cubes, changing the color",
                           "AVR and AVR Numbers");
    #ifdef _WIN32
-      racketIntApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      racketIntApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      racketIntApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      racketIntApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
 
    // initialize the targets
@@ -90,9 +92,9 @@ int main(int argc, char **argv)
 
    // drawRacket parameter is void, the avrSystemSingle calls the callback for its marker not informing the id
    // But it's known that the id is 0, because it's the first marker added
-   racketIntApp->addPattern((char*)"Data/avr.patt", 50.0, NULL, drawRacket);
+   racketIntApp->addPattern("data/avr.patt", 50.0, NULL, drawRacket);
    // drawControl parameter is void, the avrSystemMulti calls the callback once per frame
-   racketIntApp->addPatterns((char*)"Data/multi/markerCM.dat", drawControl);
+   racketIntApp->addPatterns("data/multi/markerCM.dat", drawControl);
 
    racketIntApp->setKeyCallback(keyEvent);
    racketIntApp->setThreshold(100);

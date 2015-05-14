@@ -18,6 +18,8 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include "glTexture.h"
 
 using namespace std;
@@ -39,13 +41,13 @@ int main(int argc, char **argv)
    textureApp->setProjectInfo("TexturedObject", "Douglas C. B. Oliveira e Rodrigo L. S. Silva",
                           "This test shows simple objects with texture over fiducial markers", "DCC and ICE");
    #ifdef _WIN32
-      textureApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      textureApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      textureApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      textureApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
-   textureApp->addPattern( (char *) "Data/dcc.patt", 60.0, NULL, draw1);
-   textureApp->addPattern( (char *) "Data/ice.patt", 60.0, NULL, draw2);
+   textureApp->addPattern("data/dcc.patt", 60.0, NULL, draw1);
+   textureApp->addPattern("data/ice.patt", 60.0, NULL, draw2);
 
    textureApp->setKeyCallback(keyEvent);
    textureApp->setThreshold(100);
@@ -53,11 +55,11 @@ int main(int argc, char **argv)
    // Defines the texture of object one
    texture1 = new glTexture();
    texture1->SetNumberOfTextures(1);
-   texture1->CreateTexture("Data/images/metal_rust.jpg", 1);
+   texture1->CreateTexture("data/images/metal_rust.jpg", 1);
    // Defines the texture in object two
    texture2 = new glTexture();
    texture2->SetNumberOfTextures(1);
-   texture2->CreateTexture("Data/images/alluminium.jpg", 0);
+   texture2->CreateTexture("data/images/alluminium.jpg", 0);
 
    textureApp->printProjectInfo();
 

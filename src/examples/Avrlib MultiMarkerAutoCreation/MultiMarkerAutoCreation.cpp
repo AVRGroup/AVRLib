@@ -21,6 +21,8 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 #include "glcText.h"
@@ -34,7 +36,7 @@ avrMatrix3x4*     relations;
 // Name for the output file
 string         nameOutFile = "AutoMulti";
 // Path of the marker files registered in the input file
-string         pathMarkerFile = "Data/multi/";
+string         pathMarkerFile = "data/multi/";
 
 // draw functions
 static void    display(int);
@@ -46,7 +48,7 @@ static void    mouseEvent(int button, int state, int x, int y);
 // utils
 static void    printDescription();
 static void    writeConfigFile();
-static string  numberToString(double number, string complement, int precis = 5);
+static string  numberToString(double number, const string& complement, int precis = 5);
 
 int main(int argc, char **argv)
 {
@@ -56,12 +58,12 @@ int main(int argc, char **argv)
    newApp = new avrApplication();
 
    #ifdef _WIN32
-      newApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      newApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      newApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      newApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
-   newApp->addPatterns((char *) "Data/multi/markerSM.dat", MODE_NEAR_CAMERA, display);
+   newApp->addPatterns("data/multi/markerSM.dat", MODE_NEAR_CAMERA, display);
 
    newApp->setKeyCallback(keyEvent);
    newApp->setMouseCallback(mouseEvent);
@@ -247,13 +249,13 @@ static void writeConfigFile(){
                 numberToString(relations[i].access(2, 2), " \t") + numberToString(relations[i].access(2, 3), "\n\n");
    }
 
-   string path = "Data/" + nameOutFile + numberToString(numberFiles, ".dat", 0);
+   string path = "data/" + nameOutFile + numberToString(numberFiles, ".dat", 0);
    ofstream file(path.c_str());
    file.write(config.c_str(), config.length());
    file.close();
 }
 
-static string numberToString(double number, string complement, int precis){
+static string numberToString(double number, const string& complement, int precis){
    int truncated = (int)number;
    double difference = number - truncated;
    if(difference > 0.5) truncated++;
@@ -273,7 +275,7 @@ static string numberToString(double number, string complement, int precis){
 static void printDescription(){
    cout <<  "-------------------------------------------------------------------------" << endl <<
             "Multi Marker Auto Creation is a application that creates one new pattern\nof multi markers, generating " <<
-            "automatically the your config file.\n\nFor this, edit the file: 'Data/model.dat' wicth the informations " <<
+            "automatically the your config file.\n\nFor this, edit the file: 'data/model.dat' wicth the informations " <<
             "of the\nmarkers that will be part of the new pattern.\n" <<
             "-------------------------------------------------------------------------" << endl << endl;
 

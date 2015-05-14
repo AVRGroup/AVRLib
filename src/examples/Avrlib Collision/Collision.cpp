@@ -20,6 +20,8 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <cmath>
 
 using namespace std;
@@ -48,15 +50,15 @@ int main(int argc, char **argv)
                           "This test simulates a collision between two spheres which changes\ncolors when touches each other",
                           "DCC and ICE");
    #ifdef _WIN32
-      collisionApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      collisionApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      collisionApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      collisionApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
 
    // Note: The same display callback is passed for the two markers
-   collisionApp->addPattern((char*)"Data/dcc.patt", 60, NULL, draw);
-   collisionApp->addPattern((char*)"Data/ice.patt", 60, NULL, draw);
+   collisionApp->addPattern("data/dcc.patt", 60, NULL, draw);
+   collisionApp->addPattern("data/ice.patt", 60, NULL, draw);
 
    collisionApp->setKeyCallback(keyEvent);
    collisionApp->setThreshold(100);

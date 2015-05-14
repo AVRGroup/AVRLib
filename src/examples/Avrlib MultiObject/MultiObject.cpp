@@ -19,11 +19,13 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 
 // Definitions of the marker files
-#define  OBJ1_PATT_NAME    "Data/avr.patt"
-#define  OBJ2_PATT_NAME    "Data/dcc.patt"
-#define  OBJ3_PATT_NAME    "Data/ice.patt"
+#define  OBJ1_PATT_NAME    "data/avr.patt"
+#define  OBJ2_PATT_NAME    "data/dcc.patt"
+#define  OBJ3_PATT_NAME    "data/ice.patt"
 // Definitions of width each marker
 #define  OBJ1_SIZE         60.0
 #define  OBJ2_SIZE         60.0
@@ -48,15 +50,15 @@ int main(int argc, char *argv[])
                           "This test shows several different virtual objects over different fiducial markers",
                           "AVR, DCC and ICE");
    #ifdef _WIN32
-      multiObjApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      multiObjApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      multiObjApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      multiObjApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
    // Note: For various markers of single type, various calls for the addPattern method are made. One for each marker.
-   multiObjApp->addPattern((char*) OBJ1_PATT_NAME, OBJ1_SIZE, NULL, draw1);
-   multiObjApp->addPattern((char*) OBJ2_PATT_NAME, OBJ2_SIZE, NULL, draw2);
-   multiObjApp->addPattern((char*) OBJ3_PATT_NAME, OBJ3_SIZE, NULL, draw3);
+   multiObjApp->addPattern(OBJ1_PATT_NAME, OBJ1_SIZE, NULL, draw1);
+   multiObjApp->addPattern(OBJ2_PATT_NAME, OBJ2_SIZE, NULL, draw2);
+   multiObjApp->addPattern(OBJ3_PATT_NAME, OBJ3_SIZE, NULL, draw3);
 
    multiObjApp->setKeyCallback(keyEvent);
    multiObjApp->setThreshold(100);

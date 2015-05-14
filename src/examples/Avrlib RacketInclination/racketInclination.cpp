@@ -23,6 +23,8 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <cmath>
 #include "command_sub.h"
 
@@ -52,10 +54,10 @@ int main(int argc, char **argv)
    racketIncApp->setProjectInfo("Racket Inclination", "Douglas C. B. Oliveira e Rodrigo L. S. Silva",
                           "This test checks the angle and distance between the racket and the surface", "AVR and AVR Numbers");
    #ifdef _WIN32
-      racketIncApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      racketIncApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      racketIncApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      racketIncApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
 
    // Initialize itens
@@ -79,8 +81,8 @@ int main(int argc, char **argv)
    myRacketItem.x = 0.0;
    myRacketItem.y = 0.0;
 
-   racketIncApp->addPattern((char*)"Data/avr.patt", 50.0, NULL, drawRacket);
-   racketIncApp->addPatterns((char*)"Data/multi/markerCM.dat", drawControl);
+   racketIncApp->addPattern("data/avr.patt", 50.0, NULL, drawRacket);
+   racketIncApp->addPatterns("data/multi/markerCM.dat", drawControl);
 
    racketIncApp->setKeyCallback(keyEvent);
    racketIncApp->setThreshold(100);

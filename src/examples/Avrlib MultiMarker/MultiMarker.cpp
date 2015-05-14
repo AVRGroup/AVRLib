@@ -20,12 +20,14 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
 avrApplication *multiApp;
 static void    draw(int id);
-static void    keyEvent( unsigned char key, int x, int y);
+static void    keyEvent(unsigned char key, int x, int y);
 
 int main(int argc, char **argv)
 {
@@ -34,15 +36,15 @@ int main(int argc, char **argv)
    multiApp->setProjectInfo("MultiMarker", "Douglas C. B. Oliveira e Rodrigo L. S. Silva",
                           "This test shows virtual objects over a multi fiducial marker", "AVR Numbers");
    #ifdef _WIN32
-      multiApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      multiApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      multiApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      multiApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
    // Note: addPatternS. The file passed here contains all markers that composes the system
    // The draw function contains one interger parameter, in this case, avrSystemMulti calls the callback for each marker.
    // if the parameter is void avrSystemMulti calls the callback for the entire system.
-   multiApp->addPatterns((char *) "Data/multi/markerCM.dat", draw);
+   multiApp->addPatterns("data/multi/markerCM.dat", draw);
 
    multiApp->setKeyCallback(keyEvent);
    multiApp->setThreshold(100);

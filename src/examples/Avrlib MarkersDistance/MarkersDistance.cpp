@@ -21,6 +21,8 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <sstream>
 #include <cmath>
 
@@ -44,14 +46,14 @@ int main(int argc, char *argv[])
                           "This test shows the distance between markers of the scene",
                           "AVR, DCC and ICE");
    #ifdef _WIN32
-      markersDistApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      markersDistApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      markersDistApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      markersDistApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
-   markersDistApp->addPattern((char*) "Data/avr.patt",60.0, NULL, draw);
-   markersDistApp->addPattern((char*) "Data/dcc.patt", 60.0, NULL, draw);
-   markersDistApp->addPattern((char*) "Data/ice.patt", 60.0, NULL, draw);
+   markersDistApp->addPattern("data/avr.patt",60.0, NULL, draw);
+   markersDistApp->addPattern("data/dcc.patt", 60.0, NULL, draw);
+   markersDistApp->addPattern("data/ice.patt", 60.0, NULL, draw);
 
    markersDistApp->setKeyCallback(keyEvent);
    // Special keyboard callback(non-printable keys)

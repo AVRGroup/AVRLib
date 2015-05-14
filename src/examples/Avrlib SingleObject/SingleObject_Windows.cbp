@@ -62,12 +62,13 @@
 			<debugger />
 			<envvars />
 			<DoxyBlocks>
-				<comment_style block="0" line="0" />
-				<doxyfile_project />
+				<comment_style block="0" line="1" />
+				<doxyfile_project project_number="1.0" output_directory="Users\Douglas\Desktop" />
 				<doxyfile_build />
 				<doxyfile_warnings />
-				<doxyfile_output />
-				<doxyfile_dot />
+				<doxyfile_alpha_index alphabetical_index="0" />
+				<doxyfile_output latex="1" />
+				<doxyfile_dot class_diagrams="1" have_dot="1" />
 				<general />
 			</DoxyBlocks>
 		</Extensions>

@@ -29,8 +29,10 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <cstdio>
-#include <string.h>
+#include <cstring>
 #include <cmath>
 
 using namespace std;
@@ -76,12 +78,12 @@ int main(int argc, char **argv)
    axisViewApp->setProjectInfo("CameraAxisView", "Igor F. Couto, Douglas C. B. Oliveira e Rodrigo L. S. Silva",
                           "This test shows a relation between the camera and the virtual object", "AVR");
    #ifdef _WIN32
-      axisViewApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat", 2, 1);
+      axisViewApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat", 2, 1);
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      axisViewApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat", 2, 1);
+      axisViewApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat", 2, 1);
    #endif
-   axisViewApp->addPattern((char*) "Data/avr.patt", 60.0, NULL, drawControl);
+   axisViewApp->addPattern("data/avr.patt", 60.0, NULL, drawControl);
 
    axisViewApp->setKeyCallback(keyEvent);
    axisViewApp->setMouseCallback(mouseEvent);

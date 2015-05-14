@@ -21,6 +21,8 @@
 
 // Header avrApplication must be included. All dependences are treated in this header
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -35,22 +37,22 @@ int main(int argc, char **argv)
 {
    glutInit(&argc, argv);
    // First: avrApplication class is instantiated. Is very important, any and all access to library functionalities is made by this instance
-   singleObjApp = new avrApplication();
+   singleObjApp = new avrApplication("AVRLib Examples - SingleObject");
 
    // Second: library configuration. Now you need to tell which files the camera and what the markers will be used.
    // Method setProjectInfo is optional. This method define the additional informations to be shown in terminal.
    singleObjApp->setProjectInfo("SingleObject", "Douglas C. B. Oliveira e Rodrigo L. S. Silva", "This test shows a virtual object over a fiducial marker", "AVR");
 
    #ifdef _WIN32
-      singleObjApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      singleObjApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      singleObjApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      singleObjApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
 
    // Sets the configuration files and camera intrinsic parameters
    // Sets the markers and sets the display callback function.
-   singleObjApp->addPattern((char *) "Data/avr.patt", 50.0, NULL, draw);
+   singleObjApp->addPattern("data/avr.patt", 50.0, NULL, draw);
 
    // Third: Optionals. Sets other callbacks (reshape, visibility and events) and threshold initial value.
    singleObjApp->setKeyCallback(keyEvent);

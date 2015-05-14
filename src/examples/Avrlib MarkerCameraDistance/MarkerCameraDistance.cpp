@@ -19,8 +19,10 @@
 */
 
 #include <avrApplication.h>
+#include <iostream>
+#include <cstdlib>
 #include <sstream>
-#include <string.h>
+#include <cstring>
 #include <cstdio>
 #include <cmath>
 
@@ -45,12 +47,12 @@ int main(int argc, char **argv)
                               numberToString(MARKER_SIZE/10, "cm"), "AVR");
 
    #ifdef _WIN32
-      camDistApp->setCameraFiles((char*) "Data/WDM_camera_AVRLib.xml", (char *) "Data/camera_para.dat");
+      camDistApp->setCameraFiles("data/WDM_camera_AVRLib.xml", "data/camera_para.dat");
    #else
       // -dev=/dev/video1 -palette=RGB -width=960 -height=544
-      camDistApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", (char *) "Data/camera_para.dat");
+      camDistApp->setCameraFiles("-dev=/dev/video0 -palette=RGB -width=640 -height=480", "data/camera_para.dat");
    #endif
-   camDistApp->addPattern((char*) "Data/avr.patt", MARKER_SIZE, NULL, draw);
+   camDistApp->addPattern("data/avr.patt", MARKER_SIZE, NULL, draw);
 
    camDistApp->setThreshold(100);
    camDistApp->setKeyCallback(keyEvent);
@@ -107,7 +109,7 @@ static void draw()
    showString(str);
 }
 
-static void showString( char * str )
+static void showString(char * str)
 {
    int i;
    glMatrixMode(GL_MODELVIEW);
