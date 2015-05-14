@@ -13,6 +13,14 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+*.exe
+
+# Codeblocks auxiliary files
+*.depend
+*.layout
+
+# Object file
+*.o
 
 # =========================
 # Operating System Files
@@ -26,7 +34,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*
