@@ -1,5 +1,7 @@
 var hierarchy =
 [
+    [ "ARMat", "struct_a_r_mat.html", null ],
+    [ "ARVec", "struct_a_r_vec.html", null ],
     [ "avrApplication", "classavr_application.html", null ],
     [ "avrMatrix", "classavr_matrix.html", [
       [ "avrMatrix3x4", "classavr_matrix3x4.html", null ]

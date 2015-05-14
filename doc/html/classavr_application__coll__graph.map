@@ -1,6 +1,6 @@
 <map id="avrApplication" name="avrApplication">
-<area shape="rect" id="node3" href="$classavr_system_marker.html" title="Abstract class for manages the systems marker of the application. " alt="" coords="49,355,169,381"/>
-<area shape="rect" id="node4" href="$classavr_matrix3x4.html" title="represents a 3x4 dimension matrix " alt="" coords="50,83,144,109"/>
-<area shape="rect" id="node7" href="$classavr_pattern.html" title="This class stores all information of a marker pattern which was registered in the application..." alt="" coords="149,173,229,200"/>
-<area shape="rect" id="node5" href="$classavr_matrix.html" title="represents a nxm dimension matrix " alt="" coords="124,5,199,32"/>
+<area shape="rect" id="node3" href="$classavr_system_marker.html" title="Abstract class for manages the systems marker of the application. " alt="" coords="78,184,201,211"/>
+<area shape="rect" id="node4" href="$classavr_matrix3x4.html" title="represents a 3x4 dimension matrix " alt="" coords="5,95,100,121"/>
+<area shape="rect" id="node5" href="$classavr_matrix.html" title="represents a nxm dimension matrix " alt="" coords="15,5,90,32"/>
+<area shape="rect" id="node7" href="$classavr_pattern.html" title="This class stores all information of a marker pattern which was registered in the application..." alt="" coords="171,5,251,32"/>
 </map>

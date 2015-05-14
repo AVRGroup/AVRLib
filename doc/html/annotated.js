@@ -1,5 +1,7 @@
 var annotated =
 [
+    [ "ARMat", "struct_a_r_mat.html", "struct_a_r_mat" ],
+    [ "ARVec", "struct_a_r_vec.html", "struct_a_r_vec" ],
     [ "avrApplication", "classavr_application.html", "classavr_application" ],
     [ "avrMatrix", "classavr_matrix.html", "classavr_matrix" ],
     [ "avrMatrix3x4", "classavr_matrix3x4.html", "classavr_matrix3x4" ],

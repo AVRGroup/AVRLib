@@ -7,18 +7,28 @@
 
 var indexSectionsWithContent =
 {
-  0: "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000101110101000111101110001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-  1: "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-  2: "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000101110101000111101110001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-  3: "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  0: "abcdegilmnoprstvwxyz~",
+  1: "a",
+  2: "a",
+  3: "acdegimnoprstvwxyz~",
+  4: "acdilmprv",
+  5: "a",
+  6: "b",
+  7: "m",
+  8: "acems"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "functions",
-  3: "variables"
+  2: "files",
+  3: "functions",
+  4: "variables",
+  5: "typedefs",
+  6: "enums",
+  7: "enumvalues",
+  8: "defines"
 };
 
 function convertToId(search)
@@ -28,7 +38,7 @@ function convertToId(search)
   {
     var c = search.charAt(i);
     var cn = c.charCodeAt(0);
-    if (c.match(/[a-z0-9]/))
+    if (c.match(/[a-z0-9\u0080-\uFFFF]/))
     {
       result+=c;
     }
@@ -333,22 +343,20 @@ function SearchBox(name, resultsPath, inFrame, label)
     var searchValue = this.DOMSearchField().value.replace(/^ +/, "");
 
     var code = searchValue.toLowerCase().charCodeAt(0);
-    var hexCode;
-    if (code<16) 
+    var idxChar = searchValue.substr(0, 1).toLowerCase();
+    if ( 0xD800 <= code && code <= 0xDBFF && searchValue > 1) // surrogate pair
     {
-      hexCode="0"+code.toString(16);
-    }
-    else 
-    {
-      hexCode=code.toString(16);
+      idxChar = searchValue.substr(0, 2);
     }
 
     var resultsPage;
     var resultsPageWithSearch;
     var hasResultsPage;
 
-    if (indexSectionsWithContent[this.searchIndex].charAt(code) == '1')
+    var idx = indexSectionsWithContent[this.searchIndex].indexOf(idxChar);
+    if (idx!=-1)
     {
+       var hexCode=idx.toString(16);
        resultsPage = this.resultsPath + '/' + indexSectionNames[this.searchIndex] + '_' + hexCode + '.html';
        resultsPageWithSearch = resultsPage+'?'+escape(searchValue);
        hasResultsPage = true;

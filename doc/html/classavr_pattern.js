@@ -1,8 +1,10 @@
 var classavr_pattern =
 [
     [ "avrPattern", "classavr_pattern.html#aa4e74ed9a12e743548d9bf880aecc185", null ],
-    [ "avrPattern", "classavr_pattern.html#a05f2998048e17c4c0c9aad6f602f11b1", null ],
+    [ "avrPattern", "classavr_pattern.html#a6b5205d04267b0a3f4593d1b06120903", null ],
     [ "accuracy", "classavr_pattern.html#a212a6fc4a9acab9ae06a5fcab82b9c0d", null ],
+    [ "avrReadConfigFileNotRelation", "classavr_pattern.html#aa18165a5bf930e986f3f5051e29c26d9", null ],
+    [ "avrReadConfigFileWithRelation", "classavr_pattern.html#a5be573c62e61d14544fe68f9af5f2a95", null ],
     [ "center", "classavr_pattern.html#aead37a67a2a0ff500b071bd9bafa7c15", null ],
     [ "id", "classavr_pattern.html#a1d5dc06248a365f6acdef536ae783bf5", null ],
     [ "name", "classavr_pattern.html#ab038de2d8ebc3633cd5bbd55d18298a1", null ],

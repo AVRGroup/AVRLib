@@ -2,6 +2,7 @@
 
 body, table, div, p, dl {
 	font: 400 14px/22px Roboto,sans-serif;
+	
 }
 
 /* @group Heading Levels */
@@ -56,8 +57,12 @@ div.multicol {
 	-webkit-column-count: 3;
 }
 
-p.startli, p.startdd, p.starttd {
+p.startli, p.startdd{
 	margin-top: 2px;
+}
+
+p.starttd {
+	margin-top: 0px;
 }
 
 p.endli {
@@ -141,11 +146,11 @@ a.el {
 a.elRef {
 }
 
-a.code, a.code:visited {
+a.code, a.code:visited, a.line, a.line:visited {
 	color: #4665A2; 
 }
 
-a.codeRef, a.codeRef:visited {
+a.codeRef, a.codeRef:visited, a.lineRef, a.lineRef:visited {
 	color: #4665A2; 
 }
 
@@ -169,15 +174,17 @@ pre.fragment {
 }
 
 div.fragment {
-        padding: 0px;
-        margin: 0px;
+	padding: 4px 6px;
+	margin: 4px 8px 4px 2px;
 	background-color: #FCFCFC;
 	border: 1px solid #D5D5D5;
 }
 
+
+
 div.line {
 	font-family: monospace, fixed;
-        font-size: 13px;
+    font-size: 13px;
 	min-height: 13px;
 	line-height: 1.0;
 	text-wrap: unrestricted;
@@ -648,11 +655,11 @@ span.mlabels {
 }
 
 span.mlabel {
-        background-color: #9A9A9A;
-        border-top:1px solid #848484;
-        border-left:1px solid #848484;
-        border-right:1px solid #D5D5D5;
-        border-bottom:1px solid #D5D5D5;
+	background-color: #9A9A9A;
+	border-top:1px solid #848484;
+	border-left:1px solid #848484;
+	border-right:1px solid #D5D5D5;
+	border-bottom:1px solid #D5D5D5;
 	text-shadow: none;
 	color: white;
 	margin-right: 4px;
@@ -670,25 +677,25 @@ span.mlabel {
 /* these are for tree view when not used as main index */
 
 div.directory {
-        margin: 10px 0px;
-        border-top: 1px solid #A8B8D9;
-        border-bottom: 1px solid #A8B8D9;
-        width: 100%;
+	margin: 10px 0px;
+	border-top: 1px solid #A8B8D9;
+	border-bottom: 1px solid #A8B8D9;
+	width: 100%;
 }
 
 .directory table {
-        border-collapse:collapse;
+	border-collapse:collapse;
 }
 
 .directory td {
-        margin: 0px;
-        padding: 0px;
+	margin: 0px;
+	padding: 0px;
 	vertical-align: top;
 }
 
 .directory td.entry {
-        white-space: nowrap;
-        padding-right: 6px;
+	white-space: nowrap;
+	padding-right: 6px;
 	padding-top: 3px;
 }
 
@@ -731,6 +738,79 @@ div.directory {
 	color: #646464;
 }
 
+.arrow {
+    color: #B8B8B8;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    font-size: 80%;
+    display: inline-block;
+    width: 16px;
+    height: 22px;
+}
+
+.icon {
+    font-family: Arial, Helvetica;
+    font-weight: bold;
+    font-size: 12px;
+    height: 14px;
+    width: 16px;
+    display: inline-block;
+    background-color: #9A9A9A;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.icona {
+    width: 24px;
+    height: 22px;
+    display: inline-block;
+}
+
+.iconfopen {
+    width: 24px;
+    height: 18px;
+    margin-bottom: 4px;
+    background-image:url('ftv2folderopen.png');
+    background-position: 0px -4px;
+    background-repeat: repeat-y;
+    vertical-align:top;
+    display: inline-block;
+}
+
+.iconfclosed {
+    width: 24px;
+    height: 18px;
+    margin-bottom: 4px;
+    background-image:url('ftv2folderclosed.png');
+    background-position: 0px -4px;
+    background-repeat: repeat-y;
+    vertical-align:top;
+    display: inline-block;
+}
+
+.icondoc {
+    width: 24px;
+    height: 18px;
+    margin-bottom: 4px;
+    background-image:url('ftv2doc.png');
+    background-position: 0px -4px;
+    background-repeat: repeat-y;
+    vertical-align:top;
+    display: inline-block;
+}
+
+table.directory {
+    font: 400 14px Roboto,sans-serif;
+}
+
+/* @end */
 div.dynheader {
         margin-top: 8px;
 	-webkit-touch-callout: none;
@@ -1009,12 +1089,31 @@ dl.section dd {
 	margin-bottom: 6px;
 }
 
+#titlearea
+{
+	display: table;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	min-width: 800px;
+	border-bottom: 1px solid #848484;
+	background-color: rgb(250, 250, 250);
+}
+
+#titlearea table{
+	width: 100%
+}
+
+#titlearea table tbody tr td{
+	width: 30%;
+}
 
 #projectlogo
 {
-	text-align: center;
+	text-align: right;
 	vertical-align: bottom;
 	border-collapse: separate;
+	padding-right: 0.5em;
 }
  
 #projectlogo img
@@ -1024,46 +1123,47 @@ dl.section dd {
  
 #projectname
 {
-	font: 300% Tahoma, Arial,sans-serif;
-	margin: 0px;
-	padding: 2px 0px;
+	font: 330% Tahoma, Arial, sans-serif;
+	font-weight: bold;
+	color: rgb(90, 93, 90);
+	margin-top: -7px;
+	padding: 0px 3px;
 }
     
 #projectbrief
 {
-	font: 120% Tahoma, Arial,sans-serif;
-	margin: 0px;
+	font: 110% Tahoma, Arial, sans-serif;
+	color: rgb(90, 93, 90);
+	margin-top: -5px;
 	padding: 0px;
 }
 
 #projectnumber
 {
-	font: 50% Tahoma, Arial,sans-serif;
-	margin: 0px;
+	font: 40% Arial, Tahoma,sans-serif;
+	color: #800A1C;
+	margin-left: 13px;
 	padding: 0px;
-}
-
-#titlearea
-{
-	padding: 0px;
-	margin: 0px;
-	width: 100%;
-	border-bottom: 1px solid #848484;
 }
 
 .image
 {
-        text-align: center;
+	text-align: center;
 }
 
 .dotgraph
 {
-        text-align: center;
+	text-align: center;
 }
 
 .mscgraph
 {
-        text-align: center;
+	text-align: center;
+}
+
+.diagraph
+{
+	text-align: center;
 }
 
 .caption
@@ -1077,74 +1177,74 @@ div.zoom
 }
 
 dl.citelist {
-        margin-bottom:50px;
+	margin-bottom:50px;
 }
 
 dl.citelist dt {
-        color:#545454;
-        float:left;
-        font-weight:bold;
-        margin-right:10px;
-        padding:5px;
+	color:#545454;
+	float:left;
+	font-weight:bold;
+	margin-right:10px;
+	padding:5px;
 }
 
 dl.citelist dd {
-        margin:2px 0;
-        padding:5px 0;
+	margin:2px 0;
+	padding:5px 0;
 }
 
 div.toc {
-        padding: 14px 25px;
-        background-color: #F7F7F7;
-        border: 1px solid #E3E3E3;
-        border-radius: 7px 7px 7px 7px;
-        float: right;
-        height: auto;
-        margin: 0 20px 10px 10px;
-        width: 200px;
+	padding: 14px 25px;
+	background-color: #F7F7F7;
+	border: 1px solid #E3E3E3;
+	border-radius: 7px 7px 7px 7px;
+	float: right;
+	height: auto;
+	margin: 0 20px 10px 10px;
+	width: 200px;
 }
 
 div.toc li {
-        background: url("bdwn.png") no-repeat scroll 0 5px transparent;
-        font: 10px/1.2 Verdana,DejaVu Sans,Geneva,sans-serif;
-        margin-top: 5px;
-        padding-left: 10px;
-        padding-top: 2px;
+	background: url("bdwn.png") no-repeat scroll 0 5px transparent;
+	font: 10px/1.2 Verdana,DejaVu Sans,Geneva,sans-serif;
+	margin-top: 5px;
+	padding-left: 10px;
+	padding-top: 2px;
 }
 
 div.toc h3 {
-        font: bold 12px/1.2 Arial,FreeSans,sans-serif;
+	font: bold 12px/1.2 Arial,FreeSans,sans-serif;
 	color: #747474;
-        border-bottom: 0 none;
-        margin: 0;
+	border-bottom: 0 none;
+	margin: 0;
 }
 
 div.toc ul {
-        list-style: none outside none;
-        border: medium none;
-        padding: 0px;
+	list-style: none outside none;
+	border: medium none;
+	padding: 0px;
 }       
 
 div.toc li.level1 {
-        margin-left: 0px;
+	margin-left: 0px;
 }
 
 div.toc li.level2 {
-        margin-left: 15px;
+	margin-left: 15px;
 }
 
 div.toc li.level3 {
-        margin-left: 30px;
+	margin-left: 30px;
 }
 
 div.toc li.level4 {
-        margin-left: 45px;
+	margin-left: 45px;
 }
 
 .inherit_header {
-        font-weight: bold;
-        color: gray;
-        cursor: pointer;
+	font-weight: bold;
+	color: gray;
+	cursor: pointer;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -1154,16 +1254,187 @@ div.toc li.level4 {
 }
 
 .inherit_header td {
-        padding: 6px 0px 2px 5px;
+	padding: 6px 0px 2px 5px;
 }
 
 .inherit {
-        display: none;
+	display: none;
 }
 
 tr.heading h2 {
-        margin-top: 12px;
-        margin-bottom: 4px;
+	margin-top: 12px;
+	margin-bottom: 4px;
+}
+
+/* tooltip related style info */
+
+.ttc {
+	position: absolute;
+	display: none;
+}
+
+#powerTip {
+	cursor: default;
+	white-space: nowrap;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 4px 4px 4px 4px;
+	box-shadow: 1px 1px 7px gray;
+	display: none;
+	font-size: smaller;
+	max-width: 80%;
+	opacity: 0.9;
+	padding: 1ex 1em 1em;
+	position: absolute;
+	z-index: 2147483647;
+}
+
+#powerTip div.ttdoc {
+	color: grey;
+	font-style: italic;
+}
+
+#powerTip div.ttname a {
+	font-weight: bold;
+}
+
+#powerTip div.ttname {
+	font-weight: bold;
+}
+
+#powerTip div.ttdeci {
+	color: #006318;
+}
+
+#powerTip div {
+	margin: 0px;
+	padding: 0px;
+	font: 12px/16px Roboto,sans-serif;
+}
+
+#powerTip:before, #powerTip:after {
+	content: "";
+	position: absolute;
+	margin: 0px;
+}
+
+#powerTip.n:after,  #powerTip.n:before,
+#powerTip.s:after,  #powerTip.s:before,
+#powerTip.w:after,  #powerTip.w:before,
+#powerTip.e:after,  #powerTip.e:before,
+#powerTip.ne:after, #powerTip.ne:before,
+#powerTip.se:after, #powerTip.se:before,
+#powerTip.nw:after, #powerTip.nw:before,
+#powerTip.sw:after, #powerTip.sw:before {
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+}
+
+#powerTip.n:after,  #powerTip.s:after,
+#powerTip.w:after,  #powerTip.e:after,
+#powerTip.nw:after, #powerTip.ne:after,
+#powerTip.sw:after, #powerTip.se:after {
+	border-color: rgba(255, 255, 255, 0);
+}
+
+#powerTip.n:before,  #powerTip.s:before,
+#powerTip.w:before,  #powerTip.e:before,
+#powerTip.nw:before, #powerTip.ne:before,
+#powerTip.sw:before, #powerTip.se:before {
+	border-color: rgba(128, 128, 128, 0);
+}
+
+#powerTip.n:after,  #powerTip.n:before,
+#powerTip.ne:after, #powerTip.ne:before,
+#powerTip.nw:after, #powerTip.nw:before {
+	top: 100%;
+}
+
+#powerTip.n:after, #powerTip.ne:after, #powerTip.nw:after {
+	border-top-color: #ffffff;
+	border-width: 10px;
+	margin: 0px -10px;
+}
+#powerTip.n:before {
+	border-top-color: #808080;
+	border-width: 11px;
+	margin: 0px -11px;
+}
+#powerTip.n:after, #powerTip.n:before {
+	left: 50%;
+}
+
+#powerTip.nw:after, #powerTip.nw:before {
+	right: 14px;
+}
+
+#powerTip.ne:after, #powerTip.ne:before {
+	left: 14px;
+}
+
+#powerTip.s:after,  #powerTip.s:before,
+#powerTip.se:after, #powerTip.se:before,
+#powerTip.sw:after, #powerTip.sw:before {
+	bottom: 100%;
+}
+
+#powerTip.s:after, #powerTip.se:after, #powerTip.sw:after {
+	border-bottom-color: #ffffff;
+	border-width: 10px;
+	margin: 0px -10px;
+}
+
+#powerTip.s:before, #powerTip.se:before, #powerTip.sw:before {
+	border-bottom-color: #808080;
+	border-width: 11px;
+	margin: 0px -11px;
+}
+
+#powerTip.s:after, #powerTip.s:before {
+	left: 50%;
+}
+
+#powerTip.sw:after, #powerTip.sw:before {
+	right: 14px;
+}
+
+#powerTip.se:after, #powerTip.se:before {
+	left: 14px;
+}
+
+#powerTip.e:after, #powerTip.e:before {
+	left: 100%;
+}
+#powerTip.e:after {
+	border-left-color: #ffffff;
+	border-width: 10px;
+	top: 50%;
+	margin-top: -10px;
+}
+#powerTip.e:before {
+	border-left-color: #808080;
+	border-width: 11px;
+	top: 50%;
+	margin-top: -11px;
+}
+
+#powerTip.w:after, #powerTip.w:before {
+	right: 100%;
+}
+#powerTip.w:after {
+	border-right-color: #ffffff;
+	border-width: 10px;
+	top: 50%;
+	margin-top: -10px;
+}
+#powerTip.w:before {
+	border-right-color: #808080;
+	border-width: 11px;
+	top: 50%;
+	margin-top: -11px;
 }
 
 @media print

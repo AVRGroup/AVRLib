@@ -1,7 +1,7 @@
 var classavr_system_single =
 [
-    [ "avrSystemSingle", "classavr_system_single.html#a25777b4804b90f0b07bea81bac2a76ea", null ],
-    [ "avrSystemSingle", "classavr_system_single.html#a3d1e92b11e29b3a512b57c149f75e0ca", null ],
+    [ "avrSystemSingle", "classavr_system_single.html#a2b076754388066547d98c31d67085dc2", null ],
+    [ "avrSystemSingle", "classavr_system_single.html#a0e92b9719379fa42ff820c61449edfb0", null ],
     [ "drawFunction", "classavr_system_single.html#a6664aa63cfc119ef461de3b24b03bda5", null ],
     [ "setCameraTransformation", "classavr_system_single.html#a295e942652e83adac2305ce58fe12bdd", null ],
     [ "setDisplayCallback", "classavr_system_single.html#a796f9552387f638896c154aee433c511", null ],

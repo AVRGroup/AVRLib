@@ -1,7 +1,7 @@
 var classavr_system_auto_multi =
 [
-    [ "avrSystemAutoMulti", "classavr_system_auto_multi.html#afa47f7680288a953c3b5b7d498efcc1e", null ],
-    [ "avrSystemAutoMulti", "classavr_system_auto_multi.html#a256dadb3e285a837032df13c1d28b972", null ],
+    [ "avrSystemAutoMulti", "classavr_system_auto_multi.html#a7e37ab80a1ec1a925d958e38639ced46", null ],
+    [ "avrSystemAutoMulti", "classavr_system_auto_multi.html#ad4f6d236dc89844ae047211ea9162dcb", null ],
     [ "~avrSystemAutoMulti", "classavr_system_auto_multi.html#a23fa075590c1596cd1b912df4c6905ac", null ],
     [ "drawFunction", "classavr_system_auto_multi.html#a030a805955fcc90a8082fcb12ad9a80f", null ],
     [ "getHolderMarker", "classavr_system_auto_multi.html#a026bfb4ca356b64cf9415a6035335251", null ],

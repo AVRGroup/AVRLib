@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classavr_system_marker.html" title="Abstract class for manages the systems marker of the application. " alt="" coords="5,56,128,83"/>
+<area shape="rect" id="node2" href="$classavr_system_auto_multi.html" title="manages marker patterns with relations between them (calculated in real time) " alt="" coords="176,5,315,32"/>
+<area shape="rect" id="node3" href="$classavr_system_multi.html" title="manages marker patterns with relations between them (calculated in preprocessing) ..." alt="" coords="190,56,301,83"/>
+<area shape="rect" id="node4" href="$classavr_system_single.html" title="manages single marker patterns " alt="" coords="186,107,305,133"/>
+</map>
